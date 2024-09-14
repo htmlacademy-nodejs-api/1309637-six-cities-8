@@ -1,13 +1,14 @@
 import { readFileSync } from 'node:fs';
 
-import { FileReader } from './file-reader.interface.js';
-import { Offer } from '../../types/offer.js';
-import { HousingType } from '../../types/housing-type.js';
-import { ConvenienceType } from '../../types/convenience-type.js';
-import { UserType } from '../../types/user-type.js';
-import { Coords } from '../../types/coords.js';
+import { IFileReader } from './types/file-reader.interface.js';
+import { TOffer } from '../../types/offer.type.js';
+import { HousingEnum } from '../../types/housing.enum.js';
+import { FacilitiesEnum } from '../../types/facilities.enum.js';
+import { UserTypeEnum } from '../../types/user-type.enum.js';
+import { TCoords } from '../../types/coords.type.js';
+import { RADIX } from '../../constants/index.js';
 
-export class TSVFileReader implements FileReader {
+export class TSVFileReader implements IFileReader {
   private rawData = '';
 
   constructor(
@@ -20,14 +21,14 @@ export class TSVFileReader implements FileReader {
     }
   }
 
-  private parseRawDataToOffers(): Offer[] {
+  private parseRawDataToOffers(): TOffer[] {
     return this.rawData
       .split('\n')
-      .filter((row) => row.trim().length > 0)
+      .filter((row) => row.trim().length)
       .map((line) => this.parseLineToOffer(line));
   }
 
-  private parseLineToOffer(line: string): Offer {
+  private parseLineToOffer(line: string): TOffer {
     const [
       title,
       description,
@@ -36,13 +37,12 @@ export class TSVFileReader implements FileReader {
       previewImagePath,
       photos,
       isPremium,
-      isFavourites,
       rating,
       housingType,
       roomsNumber,
       visitorsNumber,
       cost,
-      convenience,
+      facilities,
       commentsCount,
       coords,
       userName,
@@ -58,36 +58,31 @@ export class TSVFileReader implements FileReader {
       createdDate: new Date(createdDate),
       city,
       previewImagePath,
-      photos: this.parsePhotos(photos),
+      photos: this.parseSemiclonSeparatedValues<string[]>(photos),
       isPremium: this.parseBoolean(isPremium),
-      isFavourites: this.parseBoolean(isFavourites),
-      rating: Number.parseInt(rating, 10),
-      housingType: housingType as HousingType,
-      roomsNumber: Number.parseInt(roomsNumber, 10),
-      visitorsNumber: Number.parseInt(visitorsNumber, 10),
-      cost: Number.parseInt(cost, 10),
-      convenience: this.parseConvenience(convenience),
-      commentsCount: Number.parseInt(commentsCount, 10),
+      rating: Number.parseInt(rating, RADIX),
+      housingType: housingType as HousingEnum,
+      roomsNumber: Number.parseInt(roomsNumber, RADIX),
+      visitorsNumber: Number.parseInt(visitorsNumber, RADIX),
+      cost: Number.parseInt(cost, RADIX),
+      facilities: this.parseSemiclonSeparatedValues<FacilitiesEnum[]>(facilities),
+      commentsCount: Number.parseInt(commentsCount, RADIX),
       coords: this.parseCoords(coords),
       author: {
         name: userName,
         email,
         avatarPath,
         password,
-        type: userType as UserType,
+        type: userType as UserTypeEnum,
       },
     };
   }
 
-  private parsePhotos(photos: string): string[] {
-    return photos.split(';');
+  private parseSemiclonSeparatedValues<T>(values: string): T {
+    return values.split(';') as T;
   }
 
-  private parseConvenience(convenience: string): ConvenienceType[] {
-    return convenience.split(';') as ConvenienceType[];
-  }
-
-  private parseCoords(coords: string): Coords {
+  private parseCoords(coords: string): TCoords {
     const [latitude, longitude] = coords.split(',');
 
     return {
@@ -104,7 +99,7 @@ export class TSVFileReader implements FileReader {
     this.rawData = readFileSync(this.filename, { encoding: 'utf-8' });
   }
 
-  public toArray(): Offer[] {
+  public toArray(): TOffer[] {
     this.validateRawData();
     return this.parseRawDataToOffers();
   }

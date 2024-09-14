@@ -1,4 +1,4 @@
-export enum CommandName {
+export enum CommandEnum {
   Import = '--import',
   Help = '--help',
   Version = '--version',

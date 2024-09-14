@@ -1,11 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { isPackageJSONConfig } from '../../helpers/isPackageJSONConfig.js';
-import { Command } from './command.interface.js';
-import { CommandName } from '../types/command-name.enum.js';
+import { ICommand } from '../types/command.interface.js';
+import { CommandEnum } from '../types/command.enum.js';
 
-export class VersionCommand implements Command {
+export class VersionCommand implements ICommand {
   constructor(
     private readonly filePath: string = 'package.json'
   ) {}
@@ -15,24 +14,33 @@ export class VersionCommand implements Command {
       encoding: 'utf-8'
     });
 
-    const importedContent: unknown = JSON.parse(jsonContent);
+    const importedContent = JSON.parse(jsonContent);
 
-    if (!isPackageJSONConfig(importedContent)) {
-      throw new Error('Failed to parse json content');
-    }
+    this.isPackageJSONConfig(importedContent);
 
     return importedContent.version;
   }
 
+  private isPackageJSONConfig(value: unknown): asserts value is { version: string } {
+    if (!(
+      typeof value === 'object' &&
+      value !== null &&
+      !Array.isArray(value) &&
+      Object.hasOwn(value, 'version')
+    )) {
+      throw new Error('Failed to parse json content');
+    }
+  }
+
   public getName(): string {
-    return CommandName.Version;
+    return CommandEnum.Version;
   }
 
   public async execute(..._parameters: string[]): Promise<void> {
     try {
       const version = this.readVersion();
       console.info(version);
-    } catch (error: unknown) {
+    } catch (error) {
       console.error(`Failed to read version from ${this.filePath}`);
 
       if (error instanceof Error) {

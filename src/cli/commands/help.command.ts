@@ -1,11 +1,11 @@
 import chalk from 'chalk';
 
-import { Command } from './command.interface.js';
-import { CommandName } from '../types/command-name.enum.js';
+import { ICommand } from '../types/command.interface.js';
+import { CommandEnum } from '../types/command.enum.js';
 
-export class HelpCommand implements Command {
+export class HelpCommand implements ICommand {
   public getName(): string {
-    return CommandName.Help;
+    return CommandEnum.Help;
   }
 
   public async execute(..._parameters: string[]): Promise<void> {
@@ -16,10 +16,10 @@ export class HelpCommand implements Command {
 
       Команды:
 
-      ${chalk.green(CommandName.Version)}:                   ${chalk.magenta('# выводит номер версии')}
-      ${chalk.green(CommandName.Help)}:                      ${chalk.magenta('# печатает этот текст')}
-      ${chalk.green(CommandName.Import)} <path>:             ${chalk.magenta('# импортирует данные из TSV')}
-      ${chalk.green(CommandName.Generate)} <n> <path> <url>  ${chalk.magenta('# генерирует произвольное количество тестовых данных')}
+      ${chalk.green(CommandEnum.Version)}:                   ${chalk.magenta('# выводит номер версии package.json')}
+      ${chalk.green(CommandEnum.Help)}:                      ${chalk.magenta('# выводит список доступных команд')}
+      ${chalk.green(CommandEnum.Import)} <path>:             ${chalk.magenta('# импортирует данные из TSV')}
+      ${chalk.green(CommandEnum.Generate)} <n> <path> <url>  ${chalk.magenta('# генерирует произвольное количество тестовых данных')}
     `);
   }
 }

@@ -1,19 +1,17 @@
-import { CommandParser } from './command-parser.js';
-import { Command } from './commands/command.interface.js';
-import { CommandName } from './types/command-name.enum.js';
-
-type CommandCollection = Record<string, Command>;
+import { ICommand } from './types/command.interface.js';
+import { CommandParser } from './index.js';
+import { CommandEnum } from './types/command.enum.js';
 
 export class CLIApplication {
-  private commands: CommandCollection = {};
+  private readonly commands: Record<string, ICommand> = {};
 
   constructor(
-    private readonly defaultCommand: string = CommandName.Help
+    private readonly defaultCommand: string = CommandEnum.Help
   ) {}
 
-  public registerCommands(commandList: Command[]): void {
+  public registerCommands(commandList: ICommand[]): void {
     commandList.forEach((command) => {
-      if (Object.hasOwn(this.commands, command.getName())) {
+      if (this.commands[command.getName()]) {
         throw new Error(`Command ${command.getName()} is already registered`);
       }
 
@@ -21,11 +19,11 @@ export class CLIApplication {
     });
   }
 
-  public getCommand(commandName: string): Command {
+  public getCommand(commandName: string): ICommand {
     return this.commands[commandName] ?? this.getDefaultCommand();
   }
 
-  public getDefaultCommand(): Command | never {
+  public getDefaultCommand(): ICommand {
     if (!this.commands[this.defaultCommand]) {
       throw new Error(`The default command (${this.defaultCommand}) is not registered`);
     }
