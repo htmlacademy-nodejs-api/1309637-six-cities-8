@@ -7,7 +7,7 @@ export class ImportCommand implements ICommand {
     return CommandEnum.Import;
   }
 
-  public execute(...parameters: string[]): void {
+  public async execute(...parameters: string[]): Promise<void> {
     const [filename] = parameters;
     const fileReader = new TSVFileReader(filename?.trim());
 

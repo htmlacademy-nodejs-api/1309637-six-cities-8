@@ -31,11 +31,11 @@ export class CLIApplication {
     return this.commands[this.defaultCommand];
   }
 
-  public processCommand(argv: string[]): void {
+  public async processCommand(argv: string[]): Promise<void> {
     const parsedCommand = CommandParser.parse(argv);
     const [commandName] = Object.keys(parsedCommand);
     const command = this.getCommand(commandName);
     const commandsArguments = parsedCommand[commandName] ?? [];
-    command.execute(...commandsArguments);
+    await command.execute(...commandsArguments);
   }
 }
