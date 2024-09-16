@@ -1,8 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { ICommand } from '../types/index.js';
-import { ECommand } from '../types/index.js';
+import { ICommand, ECommand } from '../types/index.js';
 
 export class VersionCommand implements ICommand {
   constructor(

@@ -1,10 +1,10 @@
 import got from 'got';
-import { appendFile } from 'node:fs/promises';
 
 import { RADIX } from '../../shared/constants/index.js';
 import { TMockServerData } from '../../shared/types/index.js';
 import { ECommand, ICommand } from '../types/index.js';
 import { TSVOfferGenerator } from '../../shared/libs/offer-generator/index.js';
+import { TSVFileWriter } from '../../shared/libs/file-writer/index.js';
 
 export class GenerateCommand implements ICommand {
   private initialData: TMockServerData;
@@ -19,12 +19,10 @@ export class GenerateCommand implements ICommand {
 
   private async write(filepath: string, offerCount: number): Promise<void> {
     const tsvOfferGenerator = new TSVOfferGenerator(this.initialData);
+    const tsvFileWriter = new TSVFileWriter(filepath);
+
     for (let i = 0; i < offerCount; i++) {
-      await appendFile(
-        filepath,
-        `${tsvOfferGenerator.generate()}\n`,
-        { encoding: 'utf8' }
-      );
+      await tsvFileWriter.write(tsvOfferGenerator.generate());
     }
   }
 

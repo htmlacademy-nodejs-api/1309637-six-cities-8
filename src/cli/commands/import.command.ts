@@ -1,5 +1,5 @@
-import { ICommand } from '../types/index.js';
-import { ECommand } from '../types/index.js';
+import { ICommand, ECommand } from '../types/index.js';
+import { TOffer } from '../../shared/types/index.js';
 import { TSVFileReader } from '../../shared/libs/file-reader/index.js';
 
 export class ImportCommand implements ICommand {
@@ -7,13 +7,23 @@ export class ImportCommand implements ICommand {
     return ECommand.Import;
   }
 
+  private onImportedOffer(offer: TOffer): void {
+    console.info(offer);
+  }
+
+  private onCompleteImport(count: number) {
+    console.info(`${count} rows imported.`);
+  }
+
   public async execute(...parameters: string[]): Promise<void> {
     const [filename] = parameters;
     const fileReader = new TSVFileReader(filename?.trim());
 
+    fileReader.on('line', this.onImportedOffer);
+    fileReader.on('end', this.onCompleteImport);
+
     try {
       fileReader.read();
-      console.log(fileReader.toArray());
     } catch (error) {
       console.error(`Can't import data from file: ${filename}`);
 

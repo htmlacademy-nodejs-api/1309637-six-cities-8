@@ -1,7 +1,6 @@
 import chalk from 'chalk';
 
-import { ICommand } from '../types/index.js';
-import { ECommand } from '../types/index.js';
+import { ICommand, ECommand } from '../types/index.js';
 
 export class HelpCommand implements ICommand {
   public getName(): string {

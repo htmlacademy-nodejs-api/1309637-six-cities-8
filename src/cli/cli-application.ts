@@ -1,6 +1,5 @@
-import { ICommand } from './types/command.interface.js';
 import { CommandParser } from './index.js';
-import { ECommand } from './types/index.js';
+import { ECommand, ICommand } from './types/index.js';
 
 export class CLIApplication {
   private readonly commands: Record<string, ICommand> = {};

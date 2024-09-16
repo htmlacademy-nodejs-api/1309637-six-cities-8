@@ -18,3 +18,5 @@ export const LAST_WEEK_DAY = 7;
 
 export const MOCK_MIN_COMMENTS = 0;
 export const MOCK_MAX_COMMENTS = 10;
+
+export const CHUNK_SIZE = 16384;
