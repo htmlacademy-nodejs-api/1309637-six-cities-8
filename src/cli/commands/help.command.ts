@@ -1,11 +1,11 @@
 import chalk from 'chalk';
 
-import { ICommand } from '../types/command.interface.js';
-import { CommandEnum } from '../types/command.enum.js';
+import { ICommand } from '../types/index.js';
+import { ECommand } from '../types/index.js';
 
 export class HelpCommand implements ICommand {
   public getName(): string {
-    return CommandEnum.Help;
+    return ECommand.Help;
   }
 
   public async execute(..._parameters: string[]): Promise<void> {
@@ -16,10 +16,10 @@ export class HelpCommand implements ICommand {
 
       Команды:
 
-      ${chalk.green(CommandEnum.Version)}:                   ${chalk.magenta('# выводит номер версии package.json')}
-      ${chalk.green(CommandEnum.Help)}:                      ${chalk.magenta('# выводит список доступных команд')}
-      ${chalk.green(CommandEnum.Import)} <path>:             ${chalk.magenta('# импортирует данные из TSV')}
-      ${chalk.green(CommandEnum.Generate)} <n> <path> <url>  ${chalk.magenta('# генерирует произвольное количество тестовых данных')}
+      ${chalk.green(ECommand.Version)}:                   ${chalk.magenta('# выводит номер версии package.json')}
+      ${chalk.green(ECommand.Help)}:                      ${chalk.magenta('# выводит список доступных команд')}
+      ${chalk.green(ECommand.Import)} <path>:             ${chalk.magenta('# импортирует данные из TSV')}
+      ${chalk.green(ECommand.Generate)} <n> <path> <url>  ${chalk.magenta('# генерирует произвольное количество тестовых данных')}
     `);
   }
 }

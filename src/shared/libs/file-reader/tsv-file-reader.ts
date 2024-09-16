@@ -1,11 +1,13 @@
 import { readFileSync } from 'node:fs';
 
-import { IFileReader } from './types/file-reader.interface.js';
-import { TOffer } from '../../types/offer.type.js';
-import { HousingEnum } from '../../types/housing.enum.js';
-import { FacilitiesEnum } from '../../types/facilities.enum.js';
-import { UserTypeEnum } from '../../types/user-type.enum.js';
-import { TCoords } from '../../types/coords.type.js';
+import { IFileReader } from './types/index.js';
+import {
+  TOffer,
+  EHousing,
+  EFacilities,
+  EUserType,
+  TCoords,
+} from '../../types/index.js';
 import { RADIX } from '../../constants/index.js';
 
 export class TSVFileReader implements IFileReader {
@@ -61,11 +63,11 @@ export class TSVFileReader implements IFileReader {
       photos: this.parseSemiclonSeparatedValues<string[]>(photos),
       isPremium: this.parseBoolean(isPremium),
       rating: Number.parseInt(rating, RADIX),
-      housingType: housingType as HousingEnum,
+      housingType: housingType as EHousing,
       roomsNumber: Number.parseInt(roomsNumber, RADIX),
       visitorsNumber: Number.parseInt(visitorsNumber, RADIX),
       cost: Number.parseInt(cost, RADIX),
-      facilities: this.parseSemiclonSeparatedValues<FacilitiesEnum[]>(facilities),
+      facilities: this.parseSemiclonSeparatedValues<EFacilities[]>(facilities),
       commentsCount: Number.parseInt(commentsCount, RADIX),
       coords: this.parseCoords(coords),
       author: {
@@ -73,7 +75,7 @@ export class TSVFileReader implements IFileReader {
         email,
         avatarPath,
         password,
-        type: userType as UserTypeEnum,
+        type: userType as EUserType,
       },
     };
   }

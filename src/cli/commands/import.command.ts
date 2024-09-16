@@ -1,10 +1,10 @@
-import { ICommand } from '../types/command.interface.js';
-import { CommandEnum } from '../types/command.enum.js';
+import { ICommand } from '../types/index.js';
+import { ECommand } from '../types/index.js';
 import { TSVFileReader } from '../../shared/libs/file-reader/index.js';
 
 export class ImportCommand implements ICommand {
   public getName(): string {
-    return CommandEnum.Import;
+    return ECommand.Import;
   }
 
   public async execute(...parameters: string[]): Promise<void> {

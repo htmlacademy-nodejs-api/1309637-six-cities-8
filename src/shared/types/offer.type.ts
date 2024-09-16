@@ -1,7 +1,4 @@
-import { FacilitiesEnum } from './facilities.enum.js';
-import { TCoords } from './coords.type.js';
-import { HousingEnum } from './housing.enum.js';
-import { TUser } from './user.type.js';
+import { EFacilities, TCoords, EHousing, TUser } from './index.js';
 
 export type TOffer = {
   title: string;
@@ -12,11 +9,11 @@ export type TOffer = {
   photos: string[];
   isPremium: boolean;
   rating: number;
-  housingType: HousingEnum;
+  housingType: EHousing;
   roomsNumber: number;
   visitorsNumber: number;
   cost: number;
-  facilities: FacilitiesEnum[];
+  facilities: EFacilities[];
   author: TUser;
   commentsCount: number;
   coords: TCoords;

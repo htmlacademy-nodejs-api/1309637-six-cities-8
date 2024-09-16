@@ -1,12 +1,12 @@
 import { ICommand } from './types/command.interface.js';
 import { CommandParser } from './index.js';
-import { CommandEnum } from './types/command.enum.js';
+import { ECommand } from './types/index.js';
 
 export class CLIApplication {
   private readonly commands: Record<string, ICommand> = {};
 
   constructor(
-    private readonly defaultCommand: string = CommandEnum.Help
+    private readonly defaultCommand: string = ECommand.Help
   ) {}
 
   public registerCommands(commandList: ICommand[]): void {
