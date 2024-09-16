@@ -19,7 +19,10 @@ export class HelpCommand implements ICommand {
       ${chalk.green(ECommand.Version)}:                   ${chalk.magenta('# выводит номер версии package.json')}
       ${chalk.green(ECommand.Help)}:                      ${chalk.magenta('# выводит список доступных команд')}
       ${chalk.green(ECommand.Import)} <path>:             ${chalk.magenta('# импортирует данные из TSV')}
-      ${chalk.green(ECommand.Generate)} <n> <path> <url>  ${chalk.magenta('# генерирует произвольное количество тестовых данных')}
+      ${chalk.green(ECommand.Generate)} <n> <path> <url>: ${chalk.magenta('# генерирует произвольное количество тестовых объвлений')}
+                                    ${chalk.magenta(' - n - количество объявлений для генерации')}
+                                    ${chalk.magenta(' - path - путь к файлу для записи результата')}
+                                    ${chalk.magenta(' - url - URL сервиса')}
     `);
   }
 }

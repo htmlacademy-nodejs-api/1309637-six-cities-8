@@ -12,7 +12,7 @@ export type TOffer = {
   housingType: EHousing;
   roomsNumber: number;
   visitorsNumber: number;
-  cost: number;
+  price: number;
   facilities: EFacilities[];
   author: TUser;
   commentsCount: number;
