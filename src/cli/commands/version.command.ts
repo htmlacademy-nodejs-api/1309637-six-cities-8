@@ -1,8 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { ICommand } from '../types/command.interface.js';
-import { CommandEnum } from '../types/command.enum.js';
+import { ICommand, ECommand } from '../types/index.js';
 
 export class VersionCommand implements ICommand {
   constructor(
@@ -33,7 +32,7 @@ export class VersionCommand implements ICommand {
   }
 
   public getName(): string {
-    return CommandEnum.Version;
+    return ECommand.Version;
   }
 
   public async execute(..._parameters: string[]): Promise<void> {

@@ -1,4 +1,4 @@
-export enum UserTypeEnum {
+export enum EUserType {
     Regular = 'обычный',
     Pro = 'pro',
 }

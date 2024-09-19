@@ -1,19 +1,29 @@
-import { ICommand } from '../types/command.interface.js';
-import { CommandEnum } from '../types/command.enum.js';
+import { ICommand, ECommand } from '../types/index.js';
+import { TOffer } from '../../shared/types/index.js';
 import { TSVFileReader } from '../../shared/libs/file-reader/index.js';
 
 export class ImportCommand implements ICommand {
   public getName(): string {
-    return CommandEnum.Import;
+    return ECommand.Import;
+  }
+
+  private onImportedOffer(offer: TOffer): void {
+    console.info(offer);
+  }
+
+  private onCompleteImport(count: number) {
+    console.info(`${count} rows imported.`);
   }
 
   public async execute(...parameters: string[]): Promise<void> {
     const [filename] = parameters;
     const fileReader = new TSVFileReader(filename?.trim());
 
+    fileReader.on('line', this.onImportedOffer);
+    fileReader.on('end', this.onCompleteImport);
+
     try {
       fileReader.read();
-      console.log(fileReader.toArray());
     } catch (error) {
       console.error(`Can't import data from file: ${filename}`);
 
