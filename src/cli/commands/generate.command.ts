@@ -7,7 +7,7 @@ import { TSVOfferGenerator } from '../../shared/libs/offer-generator/index.js';
 import { TSVFileWriter } from '../../shared/libs/file-writer/index.js';
 
 export class GenerateCommand implements ICommand {
-  private initialData: TMockServerData;
+  private initialData?: TMockServerData;
 
   private async load(url: string): Promise<void> {
     try {
@@ -18,6 +18,10 @@ export class GenerateCommand implements ICommand {
   }
 
   private async write(filepath: string, offerCount: number): Promise<void> {
+    if (!this.initialData) {
+      throw new Error('Data isn\'t loaded');
+    }
+
     const tsvOfferGenerator = new TSVOfferGenerator(this.initialData);
     const tsvFileWriter = new TSVFileWriter(filepath);
 
@@ -32,6 +36,11 @@ export class GenerateCommand implements ICommand {
 
   public async execute(...parameters: string[]): Promise<void> {
     const [count, filepath, url] = parameters;
+
+    if (!count || !filepath || !url) {
+      throw new Error('Can\'t generate data');
+    }
+
     const offerCount = Number.parseInt(count, RADIX);
 
     try {
@@ -40,10 +49,6 @@ export class GenerateCommand implements ICommand {
       console.info(`File ${filepath} was created!`);
     } catch (error) {
       console.error('Can\'t generate data');
-
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
     }
   }
 }

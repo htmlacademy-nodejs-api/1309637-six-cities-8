@@ -9,17 +9,18 @@ export class CLIApplication {
   ) {}
 
   public registerCommands(commandList: ICommand[]): void {
-    commandList.forEach((command) => {
+    for (const command of commandList) {
       if (this.commands[command.getName()]) {
-        throw new Error(`Command ${command.getName()} is already registered`);
+        console.error(`Command ${command.getName()} is already registered`);
+        continue;
       }
 
       this.commands[command.getName()] = command;
-    });
+    }
   }
 
   public getCommand(commandName: string): ICommand {
-    return this.commands[commandName] ?? this.getDefaultCommand();
+    return this.commands[commandName] || this.getDefaultCommand();
   }
 
   public getDefaultCommand(): ICommand {
@@ -34,7 +35,7 @@ export class CLIApplication {
     const parsedCommand = CommandParser.parse(argv);
     const [commandName] = Object.keys(parsedCommand);
     const command = this.getCommand(commandName);
-    const commandsArguments = parsedCommand[commandName] ?? [];
+    const commandsArguments = parsedCommand[commandName] || [];
     await command.execute(...commandsArguments);
   }
 }
