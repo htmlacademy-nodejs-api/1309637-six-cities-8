@@ -1,6 +1,7 @@
 export { EFacilities } from './facilities.enum.js';
 export { EHousing } from './housing.enum.js';
 export { EUserType } from './user-type.enum.js';
+export { EComponent } from './component.enum.js';
 
 export { TCoords } from './coords.type.js';
 export { TOffer } from './offer.type.js';
