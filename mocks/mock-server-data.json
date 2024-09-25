@@ -1,0 +1,108 @@
+{
+  "api": {
+    "titles": [
+      "Наименование1",
+      "Наименование2",
+      "Наименование3",
+      "Наименование4",
+      "Наименование5",
+      "Наименование6",
+      "Наименование7",
+      "Наименование8"
+    ],
+    "descriptions": [
+      "Хороший дом",
+      "Приятный дом",
+      "Красивый дом",
+      "Так себе дом",
+      "Отличный дом",
+      "Замечательный дом",
+      "Великолепный дом",
+      "Необычный дом"
+    ],
+    "cities": [
+      "Paris",
+      "Cologne",
+      "Hamburg",
+      "Dusseldorf",
+      "Amsterdam",
+      "Brussels"
+    ],
+    "images": [
+      "image.jpg",
+      "image1.jpg",
+      "image2.jpg",
+      "image3.jpg",
+      "image4.jpg",
+      "image5.jpg",
+      "image6.jpg",
+      "image7.jpg"
+    ],
+    "housingTypes": [
+      "hotel",
+      "apartment",
+      "room",
+      "house"
+    ],
+    "facilities": [
+      "Breakfast",
+      "Air conditioning",
+      "Laptop friendly workspace",
+      "Baby seat",
+      "Washer",
+      "Towels",
+      "Fridge"
+    ],
+    "coords": [
+      "48.85661,2.351499",
+      "50.938361,6.959974",
+      "50.846557,4.351697",
+      "52.370216,4.895168",
+      "53.550341,10.000654",
+      "51.225402,6.776314"
+    ],
+    "users": [
+      "John",
+      "Maria",
+      "Anna",
+      "Jake",
+      "Donna",
+      "Viktor",
+      "Brad",
+      "Peter"
+    ],
+    "emails": [
+      "snow@pisem.local",
+      "president@dka.local",
+      "fish@big.local",
+      "test@pisem.local",
+      "freedom@pisem.local",
+      "rolan@pochta.local",
+      "author@mir.local",
+      "test@lost.loca",
+      "kujo-fan@story.local"
+    ],
+    "avatars": [
+      "user.jpg",
+      "photo.jpg",
+      "awesome-avatar.jpg",
+      "roland.jpg",
+      "smite.jpg",
+      "coffee.jpg"
+    ],
+    "userTypes": [
+      "обычный",
+      "pro"
+    ],
+    "passwords": [
+      "qwwerwerw",
+      "qwdasdasd",
+      "scvsdnlsn",
+      "sdskdmlcwkm",
+      "ldkmfwkef",
+      "ldkmwewdsdfd",
+      "sldkmslddd",
+      "ckmlskdnfl"
+    ]
+  }
+}

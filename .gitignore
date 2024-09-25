@@ -6,7 +6,8 @@
 /docs/
 /logs/
 .idea/*
-/mocks/
+/mocks/test*
+/mocks/mock-data*
 
 .DS_Store
 coverage
