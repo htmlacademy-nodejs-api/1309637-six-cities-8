@@ -24,11 +24,11 @@ export class CLIApplication {
   }
 
   public getDefaultCommand(): ICommand {
-    if (!this.commands[this.defaultCommand]) {
+    try {
+      return this.commands[this.defaultCommand];
+    } catch (error) {
       throw new Error(`The default command (${this.defaultCommand}) is not registered`);
     }
-
-    return this.commands[this.defaultCommand];
   }
 
   public async processCommand(argv: string[]): Promise<void> {

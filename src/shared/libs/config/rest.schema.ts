@@ -7,21 +7,21 @@ convict.addFormats(validator);
 
 export const configRestSchema = convict<TRestSchema>({
   PORT: {
-    doc: '',
-    format: '',
-    env: '',
-    default: 0,
+    doc: 'Port for incoming connections',
+    format: 'port',
+    env: 'PORT',
+    default: 4000,
   },
   SALT: {
-    doc: '',
-    format: '',
-    env: '',
+    doc: 'Salt for password hash',
+    format: String,
+    env: 'SALT',
     default: null,
   },
   DB_HOST: {
-    doc: '',
-    format: '',
-    env: '',
-    default: ''
+    doc: 'IP address of the database server (MongoDB)',
+    format: 'ipaddress',
+    env: 'DB_HOST',
+    default: '127.0.0.1',
   }
 });
