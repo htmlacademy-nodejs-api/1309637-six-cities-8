@@ -3,19 +3,14 @@ import { resolve } from 'node:path';
 import { injectable } from 'inversify';
 
 import { ILogger, ELogLevel } from './types/index.js';
-import { getCurrentModuleDirectoruPath } from '../../helpers/index.js';
-
-const LOG_FILE_PATH = 'logs/rest.log';
-const LOG_FILE_DIR_PATH = '../../../';
-const FILE_TRANSPORT_TARGET = 'pino/file';
+import { LOG_FILE_PATH, FILE_TRANSPORT_TARGET } from '../../constants/index.js';
 
 @injectable()
 export class PinoLogger implements ILogger {
   private readonly logger: Logger;
 
   constructor() {
-    const modulePath = getCurrentModuleDirectoruPath();
-    const destination = resolve(modulePath, LOG_FILE_DIR_PATH, LOG_FILE_PATH);
+    const destination = resolve(LOG_FILE_PATH);
 
     const multiTransport = transport({
       targets: [

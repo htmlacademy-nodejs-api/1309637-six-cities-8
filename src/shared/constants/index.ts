@@ -32,3 +32,11 @@ export const MockCommentsNumber = {
 };
 
 export const CHUNK_SIZE = 16384;
+export const LOG_FILE_PATH = 'logs/rest.log';
+export const FILE_TRANSPORT_TARGET = 'pino/file';
+
+export const COMPONENT = {
+  REST_APPLICATION: Symbol.for('RestApplication'),
+  LOGGER: Symbol.for('Logger'),
+  CONFIG: Symbol.for('Config'),
+};

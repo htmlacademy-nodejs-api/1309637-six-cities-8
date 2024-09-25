@@ -2,13 +2,13 @@ import { inject, injectable } from 'inversify';
 
 import { ILogger } from '../shared/libs/logger/types/index.js';
 import { IConfig, TRestSchema } from '../shared/libs/config/types/index.js';
-import { EComponent } from '../shared/types/component.enum.js';
+import { COMPONENT } from '../shared/constants/index.js';
 
 @injectable()
 export class RestApplication {
   constructor(
-    @inject(EComponent.Logger) private readonly logger: ILogger,
-    @inject(EComponent.Config) private readonly config: IConfig<TRestSchema>,
+    @inject(COMPONENT.LOGGER) private readonly logger: ILogger,
+    @inject(COMPONENT.CONFIG) private readonly config: IConfig<TRestSchema>,
   ) {}
 
   public async init() {

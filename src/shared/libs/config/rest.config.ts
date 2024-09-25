@@ -4,14 +4,14 @@ import { inject, injectable } from 'inversify';
 import { IConfig, TRestSchema } from './types/index.js';
 import { ILogger } from '../logger/types/index.js';
 import { configRestSchema } from './index.js';
-import { EComponent } from '../../types/index.js';
+import { COMPONENT } from '../../constants/index.js';
 
 @injectable()
 export class RestConfig implements IConfig<TRestSchema> {
   private readonly config: TRestSchema;
 
   constructor(
-    @inject(EComponent.Logger) private readonly logger: ILogger,
+    @inject(COMPONENT.LOGGER) private readonly logger: ILogger,
   ) {
     const parsedOutput = config();
 
