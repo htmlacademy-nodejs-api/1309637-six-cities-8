@@ -1,8 +1,9 @@
 import * as Mongoose from 'mongoose';
 import { inject, injectable } from 'inversify';
+import { setTimeout } from 'node:timers/promises';
 
 import { IDatabaseClient } from './types/index.js';
-import { COMPONENT } from '../../constants/index.js';
+import { COMPONENT, DB_CONNECT_RETRY } from '../../constants/index.js';
 import { ILogger } from '../logger/types/index.js';
 
 @injectable()
@@ -28,11 +29,22 @@ export class MongoDatabaseClient implements IDatabaseClient {
 
     this.logger.info('Trying to connect to MongoDB...');
 
-    this.mongoose = await Mongoose.connect(uri);
+    let attempt = 0;
 
-    this.isConnected = true;
+    while (attempt < DB_CONNECT_RETRY.COUNT) {
+      try {
+        this.mongoose = await Mongoose.connect(uri);
+        this.isConnected = true;
+        this.logger.info('Database connection established.');
+        return;
+      } catch (error) {
+        attempt++;
+        this.logger.error(`Failed to connect to the database. Attempt ${attempt}`, error as Error);
+        await setTimeout(DB_CONNECT_RETRY.TIMEOUT);
+      }
+    }
 
-    this.logger.info('Database connection established.');
+    throw new Error(`Unable to establish database connection after ${DB_CONNECT_RETRY.COUNT}`);
   }
 
   public async disconnect(): Promise<void> {

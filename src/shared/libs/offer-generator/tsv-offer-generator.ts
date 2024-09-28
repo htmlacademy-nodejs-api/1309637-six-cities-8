@@ -3,12 +3,12 @@ import dayjs from 'dayjs';
 import { IOfferGenerator } from './types/index.js';
 import { EFacilities, EHousing, EUserType, TMockServerData } from '../../types/index.js';
 import {
-  Price,
-  Rating,
-  RoomsNumber,
-  WeekDay,
-  VisitorsNumber,
-  MockCommentsNumber,
+  PRICE,
+  RATING,
+  ROOMS_NUMBER,
+  WEEK_DAY,
+  VISITORS_NUMBER,
+  MOCK_COMMENTS_NUMBER,
 } from '../../constants/index.js';
 import {
   generateRandomValue,
@@ -26,13 +26,13 @@ export class TSVOfferGenerator implements IOfferGenerator {
     const previewImagePath = getRandomItem<string>(this.mockData.images);
     const photos = getRandomItems<string>(this.mockData.images).join(';');
     const isPremium = Boolean(generateRandomValue(0, 1));
-    const rating = generateRandomValue(Rating.MIN, Rating.MAX, Rating.MAX_NUM_AFTER_DIGIT);
+    const rating = generateRandomValue(RATING.MIN, RATING.MAX, RATING.MAX_NUM_AFTER_DIGIT);
     const housingType = getRandomItem<EHousing>(this.mockData.housingTypes);
-    const roomsNumber = generateRandomValue(RoomsNumber.MIN, RoomsNumber.MAX);
-    const visitorsNumber = generateRandomValue(VisitorsNumber.MIN, VisitorsNumber.MAX);
-    const price = generateRandomValue(Price.MIN, Price.MAX);
+    const roomsNumber = generateRandomValue(ROOMS_NUMBER.MIN, ROOMS_NUMBER.MAX);
+    const visitorsNumber = generateRandomValue(VISITORS_NUMBER.MIN, VISITORS_NUMBER.MAX);
+    const price = generateRandomValue(PRICE.MIN, PRICE.MAX);
     const facilities = getRandomItems<EFacilities>(this.mockData.facilities).join(';');
-    const commentsCount = generateRandomValue(MockCommentsNumber.MIN, MockCommentsNumber.MAX);
+    const commentsCount = generateRandomValue(MOCK_COMMENTS_NUMBER.MIN, MOCK_COMMENTS_NUMBER.MAX);
     const coords = getRandomItem<string>(this.mockData.coords);
     const userName = getRandomItem<string>(this.mockData.users);
     const email = getRandomItem<string>(this.mockData.emails);
@@ -41,7 +41,7 @@ export class TSVOfferGenerator implements IOfferGenerator {
     const userType = getRandomItem<EUserType>(this.mockData.userTypes);
 
     const createdDate = dayjs()
-      .subtract(generateRandomValue(WeekDay.FIRST, WeekDay.LAST), 'day')
+      .subtract(generateRandomValue(WEEK_DAY.FIRST, WEEK_DAY.LAST), 'day')
       .toISOString();
 
     return [
