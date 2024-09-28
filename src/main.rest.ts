@@ -7,12 +7,15 @@ import { RestApplication } from './rest/index.js';
 import { RestConfig } from './shared/libs/config/index.js';
 import { TRestSchema, IConfig } from './shared/libs/config/types/index.js';
 import { COMPONENT } from './shared/constants/index.js';
+import { IDatabaseClient } from './shared/libs/database-client/types/index.js';
+import { MongoDatabaseClient } from './shared/libs/database-client/index.js';
 
 async function bootstrap() {
   const container = new Container();
   container.bind<RestApplication>(COMPONENT.REST_APPLICATION).to(RestApplication).inSingletonScope();
   container.bind<ILogger>(COMPONENT.LOGGER).to(PinoLogger).inSingletonScope();
   container.bind<IConfig<TRestSchema>>(COMPONENT.CONFIG).to(RestConfig).inSingletonScope();
+  container.bind<IDatabaseClient>(COMPONENT.DATABASE_CLIENT).to(MongoDatabaseClient).inSingletonScope();
 
   const application = container.get<RestApplication>(COMPONENT.REST_APPLICATION);
   await application.init();
