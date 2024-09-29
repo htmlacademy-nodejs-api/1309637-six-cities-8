@@ -15,6 +15,5 @@ export interface IOffer {
   price: number;
   facilities: EFacilities[];
   author: IUser;
-  commentsCount: number;
   coords: TCoords;
 }

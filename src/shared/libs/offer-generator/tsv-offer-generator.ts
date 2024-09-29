@@ -32,7 +32,6 @@ export class TSVOfferGenerator implements IOfferGenerator {
     const visitorsNumber = getRandomNumber(VISITORS_NUMBER.MIN, VISITORS_NUMBER.MAX);
     const price = getRandomNumber(PRICE.MIN, PRICE.MAX);
     const facilities = getRandomItems<EFacilities>(this.mockData.facilities).join(';');
-    const commentsCount = getRandomNumber(MOCK_COMMENTS_NUMBER.MIN, MOCK_COMMENTS_NUMBER.MAX);
     const coords = getRandomItem<string>(this.mockData.coords);
     const userName = getRandomItem<string>(this.mockData.users);
     const email = getRandomItem<string>(this.mockData.emails);
@@ -57,7 +56,6 @@ export class TSVOfferGenerator implements IOfferGenerator {
       visitorsNumber,
       price,
       facilities,
-      commentsCount,
       coords,
       userName,
       email,

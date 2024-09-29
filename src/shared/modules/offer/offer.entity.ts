@@ -23,45 +23,28 @@ export interface OfferEntity extends defaultClasses.Base {}
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class OfferEntity extends defaultClasses.TimeStamps {
-  @prop({
-    required: true,
-    default: '',
-    trim: true,
-    minlength: OFFER_TITLE_LENGTH.MIN,
-    maxlength: OFFER_TITLE_LENGTH.MAX,
-  })
+  @prop({ required: true })
   public title!: string;
 
-  @prop({
-    required: true,
-    default: '',
-    trim: true,
-    minlength: OFFER_DESCRIPTION_LENGTH.MIN,
-    maxlength: OFFER_DESCRIPTION_LENGTH.MAX,
-  })
+  @prop({ required: true })
   public description!: string;
 
-  @prop({required: true})
+  @prop({ required: true})
   public createdDate!: Date;
 
-  @prop({ required: true, default: ''})
+  @prop({ required: true })
   public city!: string;
 
-  @prop({ required: true, default: ''})
+  @prop({ required: true })
   public previewImagePath!: string;
 
-  @prop({ required: true, default: []})
+  @prop({ required: true })
   public photos!: string[];
 
-  @prop({ required: true, default: false})
+  @prop({ required: true })
   public isPremium!: boolean;
 
-  @prop({
-    required: true,
-    default: OFFER_RATING.MIN,
-    min: OFFER_RATING.MIN,
-    max: OFFER_RATING.MAX,
-  })
+  @prop({ required: true })
   public rating!: number;
 
   @prop({
@@ -71,28 +54,13 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   })
   public housingType!: EHousing;
 
-  @prop({
-    required: true,
-    default: ROOMS_NUMBER.MIN,
-    min: ROOMS_NUMBER.MIN,
-    max: ROOMS_NUMBER.MAX,
-  })
+  @prop({ required: true })
   public roomsNumber!: number;
 
-  @prop({
-    required: true,
-    default: VISITORS_NUMBER.MIN,
-    min: VISITORS_NUMBER.MIN,
-    max: VISITORS_NUMBER.MAX,
-  })
+  @prop({ required: true })
   public visitorsNumber!: number;
 
-  @prop({
-    required: true,
-    default: PRICE.MIN,
-    min: PRICE.MIN,
-    max: PRICE.MAX,
-  })
+  @prop({ required: true })
   public price!: number;
 
   @prop({
@@ -108,7 +76,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   })
   public authorId!: Ref<UserEntity>;
 
-  @prop({ required: true, default: null })
+  @prop({ required: true })
   public coords!: TCoords;
 }
 

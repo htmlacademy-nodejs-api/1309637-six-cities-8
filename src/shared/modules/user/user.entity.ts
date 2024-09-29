@@ -19,35 +19,26 @@ export class UserEntity extends defaultClasses.TimeStamps implements IUser {
   @prop({ unique: true, required: true })
   public email: string;
 
-  @prop({ default: '' })
   public avatarPath: string;
 
-  @prop({
-    required: true,
-    default: '',
-    minlength: USER_NAME_LENGTH.MIN,
-    maxlength: USER_NAME_LENGTH.MAX,
-  })
+  @prop({ required: true })
   public name: string;
 
-  @prop({ required: true, default: '' })
+  @prop({ required: true })
   public type: EUserType;
 
-  @prop({
-    required: true,
-    default: '',
-    minlength: USER_PASSWORD_LENGTH.MIN,
-    maxlength: USER_PASSWORD_LENGTH.MAX,
-  })
+  @prop({ required: true })
   private password?: string;
 
-  constructor(userData: IUser) {
+  constructor(userData: IUser, password: string, salt: string) {
     super();
 
     this.email = userData.email;
     this.avatarPath = userData.avatarPath;
     this.name = userData.name;
     this.type = userData.type;
+
+    this.setPassword(password, salt);
   }
 
   public getPassword() {

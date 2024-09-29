@@ -33,7 +33,6 @@ export class TSVFileReader extends EventEmitter implements IFileReader {
       visitorsNumber,
       price,
       facilities,
-      commentsCount,
       coords,
       userName,
       email,
@@ -55,7 +54,6 @@ export class TSVFileReader extends EventEmitter implements IFileReader {
       visitorsNumber: Number.parseInt(visitorsNumber, RADIX),
       price: Number.parseInt(price, RADIX),
       facilities: this.parseSemiclonSeparatedValues<EFacilities[]>(facilities),
-      commentsCount: Number.parseInt(commentsCount, RADIX),
       coords: this.parseCoords(coords),
       author: {
         name: userName,
@@ -104,7 +102,10 @@ export class TSVFileReader extends EventEmitter implements IFileReader {
         state.importedRowCount++;
 
         const parsedOffer = this.parseLineToOffer(completeRow);
-        this.emit('line', parsedOffer);
+
+        await new Promise((resolve) => {
+          this.emit('line', parsedOffer, resolve);
+        });
       }
     }
 

@@ -9,16 +9,16 @@ import { ILogger } from '../logger/types/index.js';
 @injectable()
 export class MongoDatabaseClient implements IDatabaseClient {
   private mongoose?: typeof Mongoose;
-  private isConnected: boolean;
 
   constructor(
     @inject(COMPONENT.LOGGER) private readonly logger: ILogger,
-  ) {
-    this.isConnected = false;
-  }
+  ) {}
 
   public get isConnectedDatabase() {
-    return this.isConnected;
+    if (this.mongoose) {
+      return this.mongoose.connection.readyState > 0;
+    }
+    return false;
   }
 
   public async connect(uri: string): Promise<void> {
@@ -34,7 +34,6 @@ export class MongoDatabaseClient implements IDatabaseClient {
     while (attempt < DB_CONNECT_RETRY.COUNT) {
       try {
         this.mongoose = await Mongoose.connect(uri);
-        this.isConnected = true;
         this.logger.info('Database connection established.');
         return;
       } catch (error) {
@@ -54,7 +53,6 @@ export class MongoDatabaseClient implements IDatabaseClient {
     }
 
     await this.mongoose?.disconnect?.();
-    this.isConnected = false;
     this.logger.info('Database connection closed.');
   }
 }
