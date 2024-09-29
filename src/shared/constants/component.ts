@@ -5,4 +5,6 @@ export const COMPONENT = {
   DATABASE_CLIENT: Symbol.for('DatabaseClient'),
   USER_SERVICE: Symbol.for('UserService'),
   USER_MODEL: Symbol.for('UserModel'),
+  OFFER_MODEL: Symbol.for('OfferModel'),
+  OFFER_SERVICE: Symbol.for('OfferService'),
 };

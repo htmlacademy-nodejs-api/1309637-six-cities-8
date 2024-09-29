@@ -37,7 +37,6 @@ export class TSVOfferGenerator implements IOfferGenerator {
     const userName = getRandomItem<string>(this.mockData.users);
     const email = getRandomItem<string>(this.mockData.emails);
     const avatarPath = getRandomItem<string>(this.mockData.avatars);
-    const password = getRandomItem<string>(this.mockData.passwords);
     const userType = getRandomItem<EUserType>(this.mockData.userTypes);
 
     const createdDate = dayjs()
@@ -63,7 +62,6 @@ export class TSVOfferGenerator implements IOfferGenerator {
       userName,
       email,
       avatarPath,
-      password,
       userType,
     ].join('\t');
   }
