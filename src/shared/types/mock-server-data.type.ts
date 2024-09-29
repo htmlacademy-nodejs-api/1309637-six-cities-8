@@ -12,5 +12,4 @@ export type TMockServerData = {
   emails: string[];
   avatars: string[];
   userTypes: EUserType[];
-  passwords: string[];
 }

@@ -1,5 +1,8 @@
 export const RADIX = 10;
 
+export const MIN_AVATAR_LENGTH = 5;
+export const MIN_USER_MANE_LENGTH = 2;
+
 export const PRICE = {
   MIN: 100,
   MAX: 100000,
@@ -45,4 +48,6 @@ export const COMPONENT = {
   LOGGER: Symbol.for('Logger'),
   CONFIG: Symbol.for('Config'),
   DATABASE_CLIENT: Symbol.for('DatabaseClient'),
+  USER_SERVICE: Symbol.for('UserService'),
+  USER_MODEL: Symbol.for('UserModel'),
 };

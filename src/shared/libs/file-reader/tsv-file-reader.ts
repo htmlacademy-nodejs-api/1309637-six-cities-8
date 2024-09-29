@@ -38,7 +38,6 @@ export class TSVFileReader extends EventEmitter implements IFileReader {
       userName,
       email,
       avatarPath,
-      password,
       userType,
     ] = line.split('\t');
 
@@ -62,7 +61,6 @@ export class TSVFileReader extends EventEmitter implements IFileReader {
         name: userName,
         email,
         avatarPath,
-        password,
         type: userType as EUserType,
       },
     };

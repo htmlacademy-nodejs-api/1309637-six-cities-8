@@ -1,9 +1,8 @@
 import { EUserType } from './index.js';
 
-export type TUser = {
+export interface IUser {
   name: string;
   email: string;
   avatarPath: string;
-  password: string;
   type: EUserType
 }
