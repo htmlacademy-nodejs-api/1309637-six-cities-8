@@ -8,7 +8,6 @@ import {
   ROOMS_NUMBER,
   WEEK_DAY,
   VISITORS_NUMBER,
-  MOCK_COMMENTS_NUMBER,
 } from '../../constants/index.js';
 import {
   getRandomNumber,

@@ -11,7 +11,7 @@ import { DefaultUserService, UserModel } from '../../shared/modules/user/index.j
 import { MongoDatabaseClient } from '../../shared/libs/database-client/index.js';
 import { getMongoURI } from '../../shared/helpers/database.js';
 
-const DEFAULT_DB_PORT = process.env.DB_PORT;
+const DEFAULT_DB_PORT = '27017';
 const DEFAULT_USER_PASSWORD = '123456';
 
 export class ImportCommand implements ICommand {

@@ -1,14 +1,13 @@
-import { defaultClasses, getModelForClass, prop, modelOptions, Ref } from '@typegoose/typegoose';
+import {
+  defaultClasses,
+  getModelForClass,
+  prop,
+  modelOptions,
+  Ref,
+  Severity
+} from '@typegoose/typegoose';
 
 import { EHousing, EFacilities, TCoords } from '../../types/index.js';
-import {
-  OFFER_TITLE_LENGTH,
-  OFFER_DESCRIPTION_LENGTH,
-  OFFER_RATING,
-  ROOMS_NUMBER,
-  VISITORS_NUMBER,
-  PRICE,
-} from '../../constants/index.js';
 import { UserEntity } from '../user/index.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -18,6 +17,9 @@ export interface OfferEntity extends defaultClasses.Base {}
   schemaOptions: {
     collection: 'offers',
     timestamps: true,
+  },
+  options: {
+    allowMixed: Severity.ALLOW,
   }
 })
 
