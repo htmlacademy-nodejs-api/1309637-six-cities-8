@@ -11,7 +11,7 @@ import {
   MOCK_COMMENTS_NUMBER,
 } from '../../constants/index.js';
 import {
-  generateRandomValue,
+  getRandomNumber,
   getRandomItem,
   getRandomItems,
 } from '../../helpers/index.js';
@@ -25,14 +25,14 @@ export class TSVOfferGenerator implements IOfferGenerator {
     const city = getRandomItem<string>(this.mockData.cities);
     const previewImagePath = getRandomItem<string>(this.mockData.images);
     const photos = getRandomItems<string>(this.mockData.images).join(';');
-    const isPremium = Boolean(generateRandomValue(0, 1));
-    const rating = generateRandomValue(OFFER_RATING.MIN, OFFER_RATING.MAX, OFFER_RATING.MAX_NUM_AFTER_DIGIT);
+    const isPremium = Boolean(getRandomNumber(0, 1));
+    const rating = getRandomNumber(OFFER_RATING.MIN, OFFER_RATING.MAX, OFFER_RATING.MAX_NUM_AFTER_DIGIT);
     const housingType = getRandomItem<EHousing>(this.mockData.housingTypes);
-    const roomsNumber = generateRandomValue(ROOMS_NUMBER.MIN, ROOMS_NUMBER.MAX);
-    const visitorsNumber = generateRandomValue(VISITORS_NUMBER.MIN, VISITORS_NUMBER.MAX);
-    const price = generateRandomValue(PRICE.MIN, PRICE.MAX);
+    const roomsNumber = getRandomNumber(ROOMS_NUMBER.MIN, ROOMS_NUMBER.MAX);
+    const visitorsNumber = getRandomNumber(VISITORS_NUMBER.MIN, VISITORS_NUMBER.MAX);
+    const price = getRandomNumber(PRICE.MIN, PRICE.MAX);
     const facilities = getRandomItems<EFacilities>(this.mockData.facilities).join(';');
-    const commentsCount = generateRandomValue(MOCK_COMMENTS_NUMBER.MIN, MOCK_COMMENTS_NUMBER.MAX);
+    const commentsCount = getRandomNumber(MOCK_COMMENTS_NUMBER.MIN, MOCK_COMMENTS_NUMBER.MAX);
     const coords = getRandomItem<string>(this.mockData.coords);
     const userName = getRandomItem<string>(this.mockData.users);
     const email = getRandomItem<string>(this.mockData.emails);
@@ -40,7 +40,7 @@ export class TSVOfferGenerator implements IOfferGenerator {
     const userType = getRandomItem<EUserType>(this.mockData.userTypes);
 
     const createdDate = dayjs()
-      .subtract(generateRandomValue(WEEK_DAY.FIRST, WEEK_DAY.LAST), 'day')
+      .subtract(getRandomNumber(WEEK_DAY.FIRST, WEEK_DAY.LAST), 'day')
       .toISOString();
 
     return [

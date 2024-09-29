@@ -1,7 +1,8 @@
 export {
-  getRandomNumber as generateRandomValue,
+  getRandomNumber,
   getRandomItems,
-  getRandomItem
+  getRandomItem,
+  getErrorMessage
 } from './common.js';
 
 export { getMongoURI } from './database.js';
