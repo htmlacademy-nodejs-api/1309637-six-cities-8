@@ -1,5 +1,5 @@
 import { ICommand, ECommand } from '../types/index.js';
-import { TOffer } from '../../shared/types/index.js';
+import { IOffer } from '../../shared/types/index.js';
 import { TSVFileReader } from '../../shared/libs/file-reader/index.js';
 
 export class ImportCommand implements ICommand {
@@ -7,7 +7,7 @@ export class ImportCommand implements ICommand {
     return ECommand.Import;
   }
 
-  private onImportedOffer(offer: TOffer): void {
+  private onImportedOffer(offer: IOffer): void {
     console.info(offer);
   }
 

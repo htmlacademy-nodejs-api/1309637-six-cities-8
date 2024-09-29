@@ -1,6 +1,6 @@
 import { EFacilities, TCoords, EHousing, IUser } from './index.js';
 
-export type TOffer = {
+export interface IOffer {
   title: string;
   description: string;
   createdDate: Date;

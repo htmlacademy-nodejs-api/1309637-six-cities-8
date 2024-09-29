@@ -4,7 +4,7 @@ import { IOfferGenerator } from './types/index.js';
 import { EFacilities, EHousing, EUserType, TMockServerData } from '../../types/index.js';
 import {
   PRICE,
-  RATING,
+  OFFER_RATING,
   ROOMS_NUMBER,
   WEEK_DAY,
   VISITORS_NUMBER,
@@ -26,7 +26,7 @@ export class TSVOfferGenerator implements IOfferGenerator {
     const previewImagePath = getRandomItem<string>(this.mockData.images);
     const photos = getRandomItems<string>(this.mockData.images).join(';');
     const isPremium = Boolean(generateRandomValue(0, 1));
-    const rating = generateRandomValue(RATING.MIN, RATING.MAX, RATING.MAX_NUM_AFTER_DIGIT);
+    const rating = generateRandomValue(OFFER_RATING.MIN, OFFER_RATING.MAX, OFFER_RATING.MAX_NUM_AFTER_DIGIT);
     const housingType = getRandomItem<EHousing>(this.mockData.housingTypes);
     const roomsNumber = generateRandomValue(ROOMS_NUMBER.MIN, ROOMS_NUMBER.MAX);
     const visitorsNumber = generateRandomValue(VISITORS_NUMBER.MIN, VISITORS_NUMBER.MAX);

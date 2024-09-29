@@ -3,7 +3,7 @@ import { createReadStream } from 'node:fs';
 
 import { IFileReader } from './types/index.js';
 import {
-  TOffer,
+  IOffer,
   EHousing,
   EFacilities,
   EUserType,
@@ -18,7 +18,7 @@ export class TSVFileReader extends EventEmitter implements IFileReader {
     super();
   }
 
-  private parseLineToOffer(line: string): TOffer {
+  private parseLineToOffer(line: string): IOffer {
     const [
       title,
       description,
