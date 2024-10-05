@@ -7,7 +7,7 @@ export class HelpCommand implements ICommand {
     return ECommand.Help;
   }
 
-  public async execute(..._parameters: string[]): Promise<void> {
+  public execute(..._parameters: string[]): void {
     console.info(`
       Программа для подготовки данных для REST API сервера.  
 
@@ -17,7 +17,14 @@ export class HelpCommand implements ICommand {
 
       ${chalk.green(ECommand.Version)}:                   ${chalk.magenta('# выводит номер версии package.json')}
       ${chalk.green(ECommand.Help)}:                      ${chalk.magenta('# выводит список доступных команд')}
-      ${chalk.green(ECommand.Import)} <path>:             ${chalk.magenta('# импортирует данные из TSV')}
+      ${chalk.green(ECommand.Import)} <path> <login> <password> <host> <dbname> <salt>:
+                                  ${chalk.magenta(' # импортирует данные из TSV в БД')}
+                                    ${chalk.magenta(' - path - путь к импортируемому файлу')}
+                                    ${chalk.magenta(' - login - логин БД')}
+                                    ${chalk.magenta(' - password - пароль БД')}
+                                    ${chalk.magenta(' - host - хост БД')}
+                                    ${chalk.magenta(' - dbname - имя БД')}
+                                    ${chalk.magenta(' - salt - соль')}
       ${chalk.green(ECommand.Generate)} <n> <path> <url>: ${chalk.magenta('# генерирует произвольное количество тестовых объвлений')}
                                     ${chalk.magenta(' - n - количество объявлений для генерации')}
                                     ${chalk.magenta(' - path - путь к файлу для записи результата')}

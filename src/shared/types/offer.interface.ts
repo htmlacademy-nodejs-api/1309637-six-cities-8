@@ -1,6 +1,6 @@
-import { EFacilities, TCoords, EHousing, TUser } from './index.js';
+import { EFacilities, TCoords, EHousing, IUser } from './index.js';
 
-export type TOffer = {
+export interface IOffer {
   title: string;
   description: string;
   createdDate: Date;
@@ -14,7 +14,6 @@ export type TOffer = {
   visitorsNumber: number;
   price: number;
   facilities: EFacilities[];
-  author: TUser;
-  commentsCount: number;
+  author: IUser;
   coords: TCoords;
 }

@@ -3,15 +3,14 @@ import dayjs from 'dayjs';
 import { IOfferGenerator } from './types/index.js';
 import { EFacilities, EHousing, EUserType, TMockServerData } from '../../types/index.js';
 import {
-  Price,
-  Rating,
-  RoomsNumber,
-  WeekDay,
-  VisitorsNumber,
-  MockCommentsNumber,
+  PRICE,
+  OFFER_RATING,
+  ROOMS_NUMBER,
+  WEEK_DAY,
+  VISITORS_NUMBER,
 } from '../../constants/index.js';
 import {
-  generateRandomValue,
+  getRandomNumber,
   getRandomItem,
   getRandomItems,
 } from '../../helpers/index.js';
@@ -25,23 +24,21 @@ export class TSVOfferGenerator implements IOfferGenerator {
     const city = getRandomItem<string>(this.mockData.cities);
     const previewImagePath = getRandomItem<string>(this.mockData.images);
     const photos = getRandomItems<string>(this.mockData.images).join(';');
-    const isPremium = Boolean(generateRandomValue(0, 1));
-    const rating = generateRandomValue(Rating.MIN, Rating.MAX, Rating.MAX_NUM_AFTER_DIGIT);
+    const isPremium = Boolean(getRandomNumber(0, 1));
+    const rating = getRandomNumber(OFFER_RATING.MIN, OFFER_RATING.MAX, OFFER_RATING.MAX_NUM_AFTER_DIGIT);
     const housingType = getRandomItem<EHousing>(this.mockData.housingTypes);
-    const roomsNumber = generateRandomValue(RoomsNumber.MIN, RoomsNumber.MAX);
-    const visitorsNumber = generateRandomValue(VisitorsNumber.MIN, VisitorsNumber.MAX);
-    const price = generateRandomValue(Price.MIN, Price.MAX);
+    const roomsNumber = getRandomNumber(ROOMS_NUMBER.MIN, ROOMS_NUMBER.MAX);
+    const visitorsNumber = getRandomNumber(VISITORS_NUMBER.MIN, VISITORS_NUMBER.MAX);
+    const price = getRandomNumber(PRICE.MIN, PRICE.MAX);
     const facilities = getRandomItems<EFacilities>(this.mockData.facilities).join(';');
-    const commentsCount = generateRandomValue(MockCommentsNumber.MIN, MockCommentsNumber.MAX);
     const coords = getRandomItem<string>(this.mockData.coords);
     const userName = getRandomItem<string>(this.mockData.users);
     const email = getRandomItem<string>(this.mockData.emails);
     const avatarPath = getRandomItem<string>(this.mockData.avatars);
-    const password = getRandomItem<string>(this.mockData.passwords);
     const userType = getRandomItem<EUserType>(this.mockData.userTypes);
 
     const createdDate = dayjs()
-      .subtract(generateRandomValue(WeekDay.FIRST, WeekDay.LAST), 'day')
+      .subtract(getRandomNumber(WEEK_DAY.FIRST, WEEK_DAY.LAST), 'day')
       .toISOString();
 
     return [
@@ -58,12 +55,10 @@ export class TSVOfferGenerator implements IOfferGenerator {
       visitorsNumber,
       price,
       facilities,
-      commentsCount,
       coords,
       userName,
       email,
       avatarPath,
-      password,
       userType,
     ].join('\t');
   }

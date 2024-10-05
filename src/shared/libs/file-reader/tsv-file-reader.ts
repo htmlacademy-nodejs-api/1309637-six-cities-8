@@ -3,7 +3,7 @@ import { createReadStream } from 'node:fs';
 
 import { IFileReader } from './types/index.js';
 import {
-  TOffer,
+  IOffer,
   EHousing,
   EFacilities,
   EUserType,
@@ -18,7 +18,7 @@ export class TSVFileReader extends EventEmitter implements IFileReader {
     super();
   }
 
-  private parseLineToOffer(line: string): TOffer {
+  private parseLineToOffer(line: string): IOffer {
     const [
       title,
       description,
@@ -33,12 +33,10 @@ export class TSVFileReader extends EventEmitter implements IFileReader {
       visitorsNumber,
       price,
       facilities,
-      commentsCount,
       coords,
       userName,
       email,
       avatarPath,
-      password,
       userType,
     ] = line.split('\t');
 
@@ -56,13 +54,11 @@ export class TSVFileReader extends EventEmitter implements IFileReader {
       visitorsNumber: Number.parseInt(visitorsNumber, RADIX),
       price: Number.parseInt(price, RADIX),
       facilities: this.parseSemiclonSeparatedValues<EFacilities[]>(facilities),
-      commentsCount: Number.parseInt(commentsCount, RADIX),
       coords: this.parseCoords(coords),
       author: {
         name: userName,
         email,
         avatarPath,
-        password,
         type: userType as EUserType,
       },
     };
@@ -106,7 +102,10 @@ export class TSVFileReader extends EventEmitter implements IFileReader {
         state.importedRowCount++;
 
         const parsedOffer = this.parseLineToOffer(completeRow);
-        this.emit('line', parsedOffer);
+
+        await new Promise((resolve) => {
+          this.emit('line', parsedOffer, resolve);
+        });
       }
     }
 
