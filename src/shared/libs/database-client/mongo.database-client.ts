@@ -1,4 +1,5 @@
 import * as Mongoose from 'mongoose';
+import { ConnectionStates } from 'mongoose';
 import { inject, injectable } from 'inversify';
 import { setTimeout } from 'node:timers/promises';
 
@@ -16,7 +17,7 @@ export class MongoDatabaseClient implements IDatabaseClient {
 
   public get isConnectedDatabase() {
     if (this.mongoose) {
-      return this.mongoose.connection.readyState > 0;
+      return this.mongoose.connection.readyState === ConnectionStates.connected;
     }
     return false;
   }
