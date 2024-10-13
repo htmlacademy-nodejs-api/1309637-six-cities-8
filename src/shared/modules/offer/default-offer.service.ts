@@ -2,9 +2,10 @@ import { DocumentType, types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 
 import { IOfferService } from './types/index.js';
-import { OfferEntity, CreateOfferDTO } from './index.js';
-import { COMPONENT } from '../../constants/index.js';
+import { OfferEntity, CreateOfferDTO, UpdateOfferDTO } from './index.js';
+import { COMPONENT, DEFAULT_OFFER_COUNT } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
+import { ESortType } from '../../types/index.js';
 
 @injectable()
 export class DefaultOfferService implements IOfferService {
@@ -21,6 +22,31 @@ export class DefaultOfferService implements IOfferService {
   }
 
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
-    return this.offerModel.findById(offerId).exec();
+    return this.offerModel
+      .findById(offerId)
+      .populate('authorId')
+      .exec();
+  }
+
+  public async find(count?: number): Promise<DocumentType<OfferEntity>[]> {
+    const limit = count || DEFAULT_OFFER_COUNT;
+
+    return this.offerModel
+      .find()
+      .sort({ createdDate: ESortType.DESC })
+      .limit(limit)
+      .populate('authorId')
+      .exec();
+  }
+
+  public async updateById(offerId: string, dto: UpdateOfferDTO): Promise<DocumentType<OfferEntity> | null> {
+    return this.offerModel
+      .findByIdAndUpdate(offerId, dto, { new: true });
+  }
+
+  public async deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+    return this.offerModel
+      .findByIdAndDelete(offerId)
+      .exec();
   }
 }

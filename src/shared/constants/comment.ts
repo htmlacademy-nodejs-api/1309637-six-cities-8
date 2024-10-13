@@ -12,3 +12,5 @@ export const MOCK_COMMENTS_NUMBER = {
   MIN: 0,
   MAX: 10,
 };
+
+export const DEFAULT_COMMENTS_COUNT = 50;

@@ -29,3 +29,5 @@ export const OFFER_RATING = {
   MAX: 5,
   MAX_NUM_AFTER_DIGIT: 1,
 };
+
+export const DEFAULT_OFFER_COUNT = 60;

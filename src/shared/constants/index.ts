@@ -5,6 +5,7 @@ export {
   VISITORS_NUMBER,
   ROOMS_NUMBER,
   PRICE,
+  DEFAULT_OFFER_COUNT,
 } from './offer.js';
 
 export {
@@ -16,6 +17,7 @@ export {
   COMMENT_RATING,
   COMMENT_TEXT_LENGTH,
   MOCK_COMMENTS_NUMBER,
+  DEFAULT_COMMENTS_COUNT,
 } from './comment.js';
 
 export { COMPONENT } from './component.js';
