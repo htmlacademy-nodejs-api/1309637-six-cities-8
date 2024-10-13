@@ -33,6 +33,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements IUser {
   @prop({
     required: true,
     ref: () => OfferEntity,
+    default: [],
   })
   public favorites?: Ref<OfferEntity>[];
 
