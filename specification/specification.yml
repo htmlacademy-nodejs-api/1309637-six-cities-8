@@ -42,6 +42,9 @@ paths:
         "409":
           description: Пользователь с таким email уже существует.
 
+        "400":
+          description: Некорректные данные для создания пользователя.
+
   /users/login:
     post:
       tags:
@@ -65,7 +68,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/user'
 
-        "404":
+        "400":
           description: Несуществующий логин или пароль.
 
     get:
@@ -82,18 +85,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/user'
 
-  /users/logout:
-    post:
-      tags:
-        - users
-      summary: Выход из закрытой части приложения
-      description: Выходит из закрытой части приложения.
+        "404":
+          description: Пользователь не найден.
 
-      responses:
-        "200":
-          description: Логаут пользователя.
-
-  /users/offers:
+  /users/favorites:
     get:
       tags:
         - users
@@ -108,7 +103,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/offers'
 
-  /users/offers/{offerId}:
+        "401":
+          description: "Пользоваетель не авторизован"
+
+  /users/favorites/{offerId}:
     post:
       tags:
         - users
@@ -122,6 +120,12 @@ paths:
         "404":
           description: Предложение с таким id не найдено.
 
+        "401":
+          description: "Пользоваетель не авторизован"
+
+        "409":
+          description: "Предложение уже в избранных"
+
     delete:
       tags:
         - users
@@ -134,6 +138,9 @@ paths:
 
         "404":
           description: Предложение с таким id не найдено.
+
+        "401":
+          description: "Пользоваетель не авторизован"
 
   /offers:
     post:
@@ -156,6 +163,9 @@ paths:
 
         "400":
           description: Введена некорректная информация
+
+        "403":
+          description: Только авторизованные пользователи могут создавать предложение
 
     get:
       tags:
@@ -192,6 +202,12 @@ paths:
         "404":
           description: Предложение с таким id не найдено.
 
+        "400":
+          description: Данные введены некорректно
+
+        "403":
+          description: Только авторизованные пользователи могут редактировать предложение
+
     delete:
       tags:
         - offers
@@ -204,6 +220,9 @@ paths:
 
         "404":
           description: Предложение с таким id не найдено.
+
+        "403":
+          description: Только авторизованные пользователи могут удалять предложение
 
     get:
       tags:
@@ -263,6 +282,9 @@ paths:
 
         "404":
           description: Предложение с таким id не найдено.
+
+        "403":
+          description: Только авторизованные пользователи могут оставлять комментарии
 
 components:
   schemas:

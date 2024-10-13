@@ -2,7 +2,7 @@ import { DocumentType, types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 
 import { IOfferService } from './types/index.js';
-import { OfferEntity, CreateOfferDto } from './index.js';
+import { OfferEntity, CreateOfferDTO } from './index.js';
 import { COMPONENT } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
 
@@ -13,7 +13,7 @@ export class DefaultOfferService implements IOfferService {
     @inject(COMPONENT.OFFER_MODEL) private readonly offerModel: types.ModelType<OfferEntity>,
   ) {}
 
-  public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>> {
+  public async create(dto: CreateOfferDTO): Promise<DocumentType<OfferEntity>> {
     const result = await this.offerModel.create(dto);
     this.logger.info(`New offer created: ${dto.title}`);
 

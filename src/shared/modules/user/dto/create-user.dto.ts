@@ -1,6 +1,6 @@
 import { EUserType } from '../../../types/index.js';
 
-export class CreateUserDto {
+export class CreateUserDTO {
   public email!: string;
   public name!: string;
   public avatarPath!: string;
