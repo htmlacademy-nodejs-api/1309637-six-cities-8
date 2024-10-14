@@ -31,3 +31,5 @@ export const OFFER_RATING = {
 };
 
 export const DEFAULT_OFFER_COUNT = 60;
+
+export const INC_COMMENT_COUNT_NUMBER = 1;

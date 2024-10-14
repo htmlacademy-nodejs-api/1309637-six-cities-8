@@ -2,7 +2,7 @@ import { DocumentType, types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 
 import { ICommentService } from './types/index.js';
-import { CommentEntity, CreateCommentDTO } from './index.js';
+import { CommentEntity, CreateCommentDTO, UpdateCommentDTO } from './index.js';
 import { COMPONENT, DEFAULT_COMMENTS_COUNT } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
 import { ESortType } from '../../types/sort-type.enum.js';
@@ -30,11 +30,9 @@ export class DefaultCommentService implements ICommentService {
       .exec();
   }
 
-  public async deleteByOfferId(offerId: string): Promise<number | null> {
-    const result = await this.commentModel
-      .deleteMany({ offerId })
+  public async updateRating(offerId: string, dto: UpdateCommentDTO): Promise<DocumentType<CommentEntity> | null> {
+    return this.commentModel
+      .findByIdAndUpdate(offerId, dto, { new: true })
       .exec();
-
-    return result.deletedCount;
   }
 }

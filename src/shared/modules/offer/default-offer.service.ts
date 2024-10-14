@@ -2,8 +2,15 @@ import { DocumentType, types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 
 import { IOfferService } from './types/index.js';
-import { OfferEntity, CreateOfferDTO, UpdateOfferDTO } from './index.js';
-import { COMPONENT, DEFAULT_OFFER_COUNT } from '../../constants/index.js';
+import {
+  OfferEntity,
+  CreateOfferDTO,
+  UpdateOfferDTO,
+  populateAuthor,
+  populateCommentsCount,
+  populateComments,
+} from './index.js';
+import { COMPONENT, DEFAULT_OFFER_COUNT, INC_COMMENT_COUNT_NUMBER } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
 import { ESortType } from '../../types/index.js';
 
@@ -24,7 +31,7 @@ export class DefaultOfferService implements IOfferService {
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findById(offerId)
-      .populate('authorId')
+      .aggregate([populateAuthor, ...populateComments])
       .exec();
   }
 
@@ -35,7 +42,7 @@ export class DefaultOfferService implements IOfferService {
       .find()
       .sort({ createdDate: ESortType.DESC })
       .limit(limit)
-      .populate('authorId')
+      .aggregate([populateAuthor, ...populateCommentsCount])
       .exec();
   }
 
@@ -48,5 +55,12 @@ export class DefaultOfferService implements IOfferService {
     return this.offerModel
       .findByIdAndDelete(offerId)
       .exec();
+  }
+
+  public async incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+    return this.offerModel
+      .findByIdAndUpdate(offerId, {'$inc': {
+        commentCount: INC_COMMENT_COUNT_NUMBER,
+      }}).exec();
   }
 }

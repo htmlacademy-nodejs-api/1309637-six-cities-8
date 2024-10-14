@@ -6,6 +6,7 @@ export {
   ROOMS_NUMBER,
   PRICE,
   DEFAULT_OFFER_COUNT,
+  INC_COMMENT_COUNT_NUMBER,
 } from './offer.js';
 
 export {
