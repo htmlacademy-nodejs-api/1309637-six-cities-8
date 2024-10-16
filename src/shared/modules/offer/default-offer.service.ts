@@ -1,4 +1,5 @@
 import { DocumentType, types } from '@typegoose/typegoose';
+import { Types } from 'mongoose';
 import { inject, injectable } from 'inversify';
 
 import { IOfferService } from './types/index.js';
@@ -29,10 +30,16 @@ export class DefaultOfferService implements IOfferService {
   }
 
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
-    return this.offerModel
-      .findById(offerId)
-      .aggregate([populateAuthor, ...populateComments])
+    const result = await this.offerModel
+      .find()
+      .aggregate([
+        { $match: { '_id': new Types.ObjectId(offerId) } },
+        populateAuthor,
+        ...populateComments,
+      ])
       .exec();
+
+    return result[0] || null;
   }
 
   public async find(count?: number): Promise<DocumentType<OfferEntity>[]> {

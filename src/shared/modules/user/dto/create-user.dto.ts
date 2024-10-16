@@ -6,5 +6,5 @@ export class CreateUserDTO {
   public avatarPath!: string;
   public type!: EUserType;
   public password!: string;
-  public favorites!: string[];
+  public favorites?: string[];
 }

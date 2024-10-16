@@ -3,7 +3,6 @@ import { EHousing, EFacilities, TCoords } from '../../../types/index.js';
 export class UpdateOfferDTO {
   public title?: string;
   public description?: string;
-  public createdDate?: Date;
   public city?: string;
   public previewImagePath?: string;
   public photos?: string[];
@@ -14,5 +13,4 @@ export class UpdateOfferDTO {
   public price?: number;
   public facilities?: EFacilities[];
   public coords?: TCoords;
-  public rating?: number;
 }

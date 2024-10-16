@@ -30,9 +30,6 @@ export class CommentEntity extends defaultClasses.TimeStamps {
 
   public rating!: number;
 
-  @prop({ required: true})
-  public createdDate!: Date;
-
   @prop({
     required: true,
     ref: () => UserEntity,
