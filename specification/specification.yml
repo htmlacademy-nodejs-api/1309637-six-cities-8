@@ -173,6 +173,13 @@ paths:
       summary: Получение списка предложений по аренде
       description: Возвращает список предложений по аренде
 
+      parameters:
+        - name: length
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+
       responses:
         "200":
           description: Массив предложений.
@@ -241,7 +248,7 @@ paths:
         "404":
           description: Предложение с таким id не найдено.
 
-  /comments/{offerID}:
+  /comments/{offerId}:
     get:
       tags:
         - comments
@@ -491,7 +498,10 @@ components:
         rating:
           type: integer
 
-        author:
+        offerId:
+          $ref: '#/components/schemas/offer'
+
+        authorId:
           $ref: '#/components/schemas/user'
 
     comments:

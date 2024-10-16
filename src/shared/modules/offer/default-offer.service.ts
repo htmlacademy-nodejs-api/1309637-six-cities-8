@@ -1,10 +1,19 @@
 import { DocumentType, types } from '@typegoose/typegoose';
+import { Types } from 'mongoose';
 import { inject, injectable } from 'inversify';
 
 import { IOfferService } from './types/index.js';
-import { OfferEntity, CreateOfferDTO } from './index.js';
-import { COMPONENT } from '../../constants/index.js';
+import {
+  OfferEntity,
+  CreateOfferDTO,
+  UpdateOfferDTO,
+  populateAuthor,
+  populateCommentsCount,
+  populateComments,
+} from './index.js';
+import { COMPONENT, DEFAULT_OFFER_COUNT, INC_COMMENT_COUNT_NUMBER } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
+import { ESortType } from '../../types/index.js';
 
 @injectable()
 export class DefaultOfferService implements IOfferService {
@@ -21,6 +30,44 @@ export class DefaultOfferService implements IOfferService {
   }
 
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
-    return this.offerModel.findById(offerId).exec();
+    const result = await this.offerModel
+      .find()
+      .aggregate([
+        { $match: { '_id': new Types.ObjectId(offerId) } },
+        populateAuthor,
+        ...populateComments,
+      ])
+      .exec();
+
+    return result[0] || null;
+  }
+
+  public async find(count?: number): Promise<DocumentType<OfferEntity>[]> {
+    const limit = count || DEFAULT_OFFER_COUNT;
+
+    return this.offerModel
+      .find()
+      .sort({ createdDate: ESortType.DESC })
+      .limit(limit)
+      .aggregate([populateAuthor, ...populateCommentsCount])
+      .exec();
+  }
+
+  public async updateById(offerId: string, dto: UpdateOfferDTO): Promise<DocumentType<OfferEntity> | null> {
+    return this.offerModel
+      .findByIdAndUpdate(offerId, dto, { new: true });
+  }
+
+  public async deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+    return this.offerModel
+      .findByIdAndDelete(offerId)
+      .exec();
+  }
+
+  public async incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+    return this.offerModel
+      .findByIdAndUpdate(offerId, {'$inc': {
+        commentCount: INC_COMMENT_COUNT_NUMBER,
+      }}).exec();
   }
 }
