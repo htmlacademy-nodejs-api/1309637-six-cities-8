@@ -1,0 +1,30 @@
+# Предложения
+## Получить список предложений
+GET http://localhost:4000/offers HTTP/1.1
+Content-Type: application/json
+
+###
+
+POST http://localhost:4000/offers HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Созданный",
+  "description": "JGdsfdfsdf",
+  "city": "Paris",
+  "previewImagePath": "sfsdf.jpg",
+  "photos": ["sdfsfaa.jpg", "sccccc.jpg"],
+  "isPremium": true,
+  "housingType": "house",
+  "roomsNumber": 3,
+  "visitorsNumber": 3,
+  "price": 10000,
+  "facilities": ["Breakfast", "Air conditioning"],
+  "authorId": "66f947e7e706754fb39b93a7",
+  "coords": {
+    "latitude": 50.846557,
+    "longitude": 4.351697
+  }
+}
+
+###

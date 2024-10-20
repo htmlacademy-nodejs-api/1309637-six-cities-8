@@ -24,7 +24,6 @@ export class DefaultUserService implements IUserService {
 
   public async findByEmail(email: string): Promise<DocumentType<UserEntity> | null> {
     const result = await this.userModel
-      .find()
       .aggregate([
         { $match: { email } },
         populateFavorites

@@ -8,7 +8,7 @@ import {
   CreateOfferDTO,
   UpdateOfferDTO,
   populateAuthor,
-  populateCommentsCount,
+  // populateCommentsCount,
   populateComments,
 } from './index.js';
 import { COMPONENT, DEFAULT_OFFER_COUNT, INC_COMMENT_COUNT_NUMBER } from '../../constants/index.js';
@@ -31,10 +31,9 @@ export class DefaultOfferService implements IOfferService {
 
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     const result = await this.offerModel
-      .find()
       .aggregate([
         { $match: { '_id': new Types.ObjectId(offerId) } },
-        populateAuthor,
+        ...populateAuthor,
         ...populateComments,
       ])
       .exec();
@@ -46,10 +45,12 @@ export class DefaultOfferService implements IOfferService {
     const limit = count || DEFAULT_OFFER_COUNT;
 
     return this.offerModel
-      .find()
-      .sort({ createdDate: ESortType.DESC })
-      .limit(limit)
-      .aggregate([populateAuthor, ...populateCommentsCount])
+      .aggregate([
+        ...populateAuthor,
+        // ...populateCommentsCount,
+        { $sort: { createdAt: ESortType.DESC } },
+        { $limit: limit },
+      ])
       .exec();
   }
 
