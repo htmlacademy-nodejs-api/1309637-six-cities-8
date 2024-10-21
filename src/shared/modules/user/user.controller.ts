@@ -52,7 +52,7 @@ export class UserController extends BaseController {
 
     if (!existsUser) {
       throw new HttpError(
-        StatusCodes.UNAUTHORIZED,
+        StatusCodes.BAD_REQUEST,
         `User with email ${body.email} not found.`,
         'UserController',
       );

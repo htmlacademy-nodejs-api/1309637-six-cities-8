@@ -158,7 +158,7 @@ paths:
         required: true
 
       responses:
-        "200":
+        "201":
           description: Предложение создано.
 
         "400":
