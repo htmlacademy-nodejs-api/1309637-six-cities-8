@@ -5,5 +5,5 @@ import { EHttpMethod } from './index.js';
 export interface IRoute {
   path: string;
   method: EHttpMethod;
-  handler: (req: Request, res: Response, next: NextFunction) => void;
+  handler: (req: Request, res: Response, next: NextFunction) => Promise<void> | void;
 }

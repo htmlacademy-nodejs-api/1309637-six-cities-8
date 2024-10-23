@@ -10,7 +10,7 @@ import { IController, IExceptionFilter } from './types/index.js';
 
 @injectable()
 export class RestApplication {
-  private readonly server: Express;
+  private readonly server: Express = express();
 
   constructor(
     @inject(COMPONENT.LOGGER) private readonly logger: ILogger,
@@ -19,9 +19,7 @@ export class RestApplication {
     @inject(COMPONENT.OFFER_CONTROLLER) private readonly offerController: IController,
     @inject(COMPONENT.USER_CONTROLLER) private readonly userController: IController,
     @inject(COMPONENT.EXCEPTION_FILTER) private readonly appExceptionFilter: IExceptionFilter,
-  ) {
-    this.server = express();
-  }
+  ) {}
 
   private async initDb() {
     const mongoUri = getMongoURI(
@@ -74,6 +72,6 @@ export class RestApplication {
 
     this.logger.info('Try to init server...');
     await this.initServer();
-    this.logger.info(`Server started on http://localhost:${this.config.get('PORT')}`);
+    this.logger.info(`Server started on ${this.config.get('HOST')}:${this.config.get('PORT')}`);
   }
 }

@@ -1,9 +1,13 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { EFacilities, EHousing, TCoords } from '../../../types/index.js';
+import { UserRDO } from '../../user/index.js';
 
-export class OfferRDO {
+export class ShortOfferRDO {
+  @Expose({ name: '_id' })
+  public id!: string;
+
   @Expose()
-  public _id!: string;
+  public createdAt!: string;
 
   @Expose()
   public title!: string;
@@ -41,6 +45,11 @@ export class OfferRDO {
   @Expose()
   public coords!: TCoords;
 
+  // TODO in next module
+  // @Expose()
+  // public commentsCount!: number;
+
   @Expose()
-  public author!: unknown;
+  @Type(() => UserRDO)
+  public author!: UserRDO;
 }

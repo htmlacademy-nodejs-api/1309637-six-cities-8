@@ -9,21 +9,15 @@ import { ILogger } from '../shared/libs/logger/types/index.js';
 @injectable()
 export abstract class BaseController implements IController {
   private readonly DEFAULT_CONTENT_TYPE = 'application/json';
-  private readonly _router: Router;
+  public readonly router: Router = Router();
 
   constructor(
     protected readonly logger: ILogger,
-  ) {
-    this._router = Router();
-  }
-
-  get router(): Router {
-    return this._router;
-  }
+  ) {}
 
   public addRoute(route: IRoute): void {
     const wrapperAsyncHandler = asyncHandler(route.handler.bind(this));
-    this._router[route.method](route.path, wrapperAsyncHandler);
+    this.router[route.method](route.path, wrapperAsyncHandler);
     this.logger.info(`Route registered: ${route.method.toUpperCase()} ${route.path}`);
   }
 

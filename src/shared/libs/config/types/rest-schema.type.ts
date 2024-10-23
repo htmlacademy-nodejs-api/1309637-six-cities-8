@@ -1,4 +1,5 @@
 export type TRestSchema = {
+  HOST: string;
   PORT: number;
   SALT: string;
   DB_HOST: string;

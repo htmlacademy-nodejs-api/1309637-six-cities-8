@@ -1,5 +1,4 @@
 import * as Mongoose from 'mongoose';
-import pkg from 'mongoose';
 import { inject, injectable } from 'inversify';
 import { setTimeout } from 'node:timers/promises';
 
@@ -7,7 +6,7 @@ import { IDatabaseClient } from './types/index.js';
 import { COMPONENT, DB_CONNECT_RETRY } from '../../constants/index.js';
 import { ILogger } from '../logger/types/index.js';
 
-const { ConnectionStates } = pkg;
+const { ConnectionStates } = Mongoose;
 
 @injectable()
 export class MongoDatabaseClient implements IDatabaseClient {

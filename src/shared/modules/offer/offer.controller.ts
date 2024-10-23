@@ -7,7 +7,7 @@ import { EHttpMethod } from '../../../rest/types/index.js';
 import { COMPONENT } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
 import { IOfferService } from './types/index.js';
-import { CreateOfferDTO, OfferRDO, UpdateOfferDTO } from './index.js';
+import { CreateOfferDTO, ShortOfferRDO, UpdateOfferDTO, FullOfferRDO } from './index.js';
 import { fillDTO } from '../../helpers/index.js';
 
 @injectable()
@@ -29,7 +29,7 @@ export class OfferController extends BaseController {
 
   public async index(_req: Request, res: Response): Promise<void> {
     const offers = await this.offerService.find();
-    const responseData = fillDTO(OfferRDO, offers);
+    const responseData = fillDTO(ShortOfferRDO, offers);
     this.ok(res, responseData);
   }
 
@@ -38,7 +38,7 @@ export class OfferController extends BaseController {
     res: Response,
   ): Promise<void> {
     const result = await this.offerService.create(body);
-    this.created(res, fillDTO(OfferRDO, result));
+    this.created(res, fillDTO(FullOfferRDO, result));
   }
 
   public async findOne(req: Request, res: Response): Promise<void> {
@@ -52,7 +52,7 @@ export class OfferController extends BaseController {
       );
     }
 
-    const responseData = fillDTO(OfferRDO, existsOffer);
+    const responseData = fillDTO(FullOfferRDO, existsOffer);
     this.ok(res, responseData);
   }
 
@@ -76,6 +76,6 @@ export class OfferController extends BaseController {
       );
     }
 
-    this.ok(res, result);
+    this.ok(res, fillDTO(FullOfferRDO, result));
   }
 }
