@@ -1,4 +1,4 @@
 export enum ESortType {
-  ASC = 'asc',
-  DESC = 'desc',
+  ASC = 1,
+  DESC = -1,
 }

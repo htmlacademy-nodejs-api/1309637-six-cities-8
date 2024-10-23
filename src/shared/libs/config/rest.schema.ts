@@ -6,6 +6,12 @@ import { TRestSchema } from './types/index.js';
 convict.addFormats(validator);
 
 export const configRestSchema = convict<TRestSchema>({
+  HOST: {
+    doc: 'Service hostname',
+    format: String,
+    env: 'HOST',
+    default: '',
+  },
   PORT: {
     doc: 'Port for incoming connections',
     format: 'port',
