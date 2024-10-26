@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 import { BaseController, HttpError } from '../../../rest/index.js';
@@ -10,6 +10,9 @@ import { IUserService, TCreateUserRequest, TLoginUserRequest } from './types/ind
 import { IConfig, TRestSchema } from '../../libs/config/types/index.js';
 import { fillDTO } from '../../helpers/index.js';
 import { UserRDO } from './index.js';
+import { TParamOfferId } from '../offer/types/index.js';
+
+const MOCK_USER = '66f947e7e706754fb39b93a7';
 
 @injectable()
 export class UserController extends BaseController {
@@ -24,6 +27,9 @@ export class UserController extends BaseController {
 
     this.addRoute({ path: '/register', method: EHttpMethod.Post, handler: this.create });
     this.addRoute({ path: '/login', method: EHttpMethod.Post, handler: this.login });
+    this.addRoute({ path: '/favorites/', method: EHttpMethod.Get, handler: this.showFavorites });
+    this.addRoute({ path: '/favorites/:offerId', method: EHttpMethod.Post, handler: this.addFavorite });
+    this.addRoute({ path: '/favorites/:offerId', method: EHttpMethod.Delete, handler: this.deleteFavorite });
   }
 
   public async create(
@@ -63,5 +69,19 @@ export class UserController extends BaseController {
       'Not implemented',
       'UserController',
     );
+  }
+
+  public async showFavorites(_req: Request, _res: Response): Promise<void> {
+    //
+  }
+
+  public async addFavorite({ params }: Request<TParamOfferId>, res: Response): Promise<void> {
+    const result = await this.userService.addFavorite(MOCK_USER, params.offerId);
+    this.ok(res, fillDTO(UserRDO, result));
+  }
+
+  public async deleteFavorite({ params }: Request<TParamOfferId>, res: Response): Promise<void> {
+    const result = await this.userService.deleteFavorite(MOCK_USER, params.offerId);
+    this.ok(res, fillDTO(UserRDO, result));
   }
 }

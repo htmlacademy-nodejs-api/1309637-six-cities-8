@@ -3,6 +3,7 @@ import { defaultClasses, getModelForClass, prop, modelOptions, Ref } from '@type
 import { EUserType, IUser } from '../../types/index.js';
 import { createSHA256 } from '../../helpers/index.js';
 import { OfferEntity } from '../offer/index.js';
+import { DEFAULT_AVATAR } from '../../constants/index.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface UserEntity extends defaultClasses.Base {}
@@ -19,6 +20,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements IUser {
   @prop({ unique: true, required: true })
   public email: string;
 
+  @prop({ required: true })
   public avatarPath: string;
 
   @prop({ required: true })
@@ -41,7 +43,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements IUser {
     super();
 
     this.email = userData.email;
-    this.avatarPath = userData.avatarPath;
+    this.avatarPath = userData.avatarPath || DEFAULT_AVATAR;
     this.name = userData.name;
     this.type = userData.type;
 

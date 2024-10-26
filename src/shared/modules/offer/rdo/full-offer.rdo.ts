@@ -27,9 +27,8 @@ export class FullOfferRDO {
   @Expose()
   public isPremium!: boolean;
 
-  // TODO in next module
-  // @Expose()
-  // public isFavorite!: boolean;
+  @Expose()
+  public isFavorite!: boolean;
 
   @Expose()
   public housingType!: EHousing;
@@ -48,6 +47,9 @@ export class FullOfferRDO {
 
   @Expose()
   public coords!: TCoords;
+
+  @Expose()
+  public commentsCount!: number;
 
   @Expose()
   @Type(() => UserRDO)

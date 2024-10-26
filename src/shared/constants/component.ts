@@ -12,4 +12,5 @@ export const COMPONENT = {
   OFFER_CONTROLLER:Symbol(),
   EXCEPTION_FILTER:Symbol(),
   USER_CONTROLLER: Symbol(),
+  COMMENT_CONTROLLER: Symbol(),
 };

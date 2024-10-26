@@ -12,6 +12,7 @@ export {
 export {
   USER_NAME_LENGTH,
   USER_PASSWORD_LENGTH,
+  DEFAULT_AVATAR,
 } from './user.js';
 
 export {

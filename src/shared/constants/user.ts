@@ -7,3 +7,5 @@ export const USER_PASSWORD_LENGTH = {
   MIN: 6,
   MAX: 12,
 };
+
+export const DEFAULT_AVATAR = 'default-avatar.jpg';

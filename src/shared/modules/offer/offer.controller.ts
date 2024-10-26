@@ -22,7 +22,7 @@ export class OfferController extends BaseController {
 
     this.addRoute({ path: '/', method: EHttpMethod.Get, handler: this.index });
     this.addRoute({ path: '/', method: EHttpMethod.Post, handler: this.create });
-    this.addRoute({ path: '/:offerId', method: EHttpMethod.Get, handler: this.findOne});
+    this.addRoute({ path: '/:offerId', method: EHttpMethod.Get, handler: this.show});
     this.addRoute({ path: '/:offerId', method: EHttpMethod.Delete, handler: this.delete});
     this.addRoute({ path: '/:offerId', method: EHttpMethod.Patch, handler: this.update});
   }
@@ -41,7 +41,7 @@ export class OfferController extends BaseController {
     this.created(res, fillDTO(FullOfferRDO, result));
   }
 
-  public async findOne(req: Request, res: Response): Promise<void> {
+  public async show(req: Request, res: Response): Promise<void> {
     const existsOffer = await this.offerService.findById(req.params.offerId);
 
     if (!existsOffer) {

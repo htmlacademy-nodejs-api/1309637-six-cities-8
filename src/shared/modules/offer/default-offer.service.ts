@@ -8,12 +8,13 @@ import {
   CreateOfferDTO,
   UpdateOfferDTO,
   populateAuthor,
-  // populateCommentsCount,
-  populateComments,
+  populateCommentsCount,
 } from './index.js';
-import { COMPONENT, DEFAULT_OFFER_COUNT, INC_COMMENT_COUNT_NUMBER } from '../../constants/index.js';
+import { COMPONENT, DEFAULT_OFFER_COUNT } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
 import { ESortType } from '../../types/index.js';
+
+const MOCK_USER = '66f947e7e706754fb39b93a7';
 
 @injectable()
 export class DefaultOfferService implements IOfferService {
@@ -33,8 +34,21 @@ export class DefaultOfferService implements IOfferService {
     const result = await this.offerModel
       .aggregate([
         { $match: { '_id': new Types.ObjectId(offerId) } },
+        {
+          $lookup: {
+            from: 'users',
+            pipeline: [
+              { $match: { '_id': new Types.ObjectId(MOCK_USER) } },
+              // { $match: { $expr: {
+              //   $and: { $in: ['$favorites', offerId] }
+              // } } }
+            ],
+            as: 'isFavorite'
+          },
+        },
+        { $unwind: '$isFavorite' },
+        ...populateCommentsCount,
         ...populateAuthor,
-        ...populateComments,
       ])
       .exec();
 
@@ -46,8 +60,7 @@ export class DefaultOfferService implements IOfferService {
 
     return this.offerModel
       .aggregate([
-        ...populateAuthor,
-        // ...populateCommentsCount,
+        ...populateCommentsCount,
         { $sort: { createdAt: ESortType.DESC } },
         { $limit: limit },
       ])
@@ -63,12 +76,5 @@ export class DefaultOfferService implements IOfferService {
     return this.offerModel
       .findByIdAndDelete(offerId)
       .exec();
-  }
-
-  public async incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
-    return this.offerModel
-      .findByIdAndUpdate(offerId, {'$inc': {
-        commentCount: INC_COMMENT_COUNT_NUMBER,
-      }}).exec();
   }
 }

@@ -13,4 +13,7 @@ export class UserRDO {
 
   @Expose()
   public type!: EUserType;
+
+  @Expose()
+  public favorites!: string[];
 }

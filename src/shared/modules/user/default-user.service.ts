@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 
@@ -52,7 +53,7 @@ export class DefaultUserService implements IUserService {
   public async addFavorite(userId: string ,offerId: string): Promise<DocumentType<UserEntity> | null> {
     return this.userModel
       .findByIdAndUpdate(userId, {
-        $addToSet: { favorites: offerId },
+        $addToSet: { favorites: new Types.ObjectId(offerId) },
       }, { new: true })
       .exec();
   }
@@ -60,7 +61,7 @@ export class DefaultUserService implements IUserService {
   public async deleteFavorite(userId: string, offerId: string): Promise<DocumentType<UserEntity> | null> {
     return this.userModel
       .findByIdAndUpdate(userId, {
-        $pull: { favorites: offerId },
+        $pull: { favorites: new Types.ObjectId(offerId) },
       }, { new: true })
       .exec();
   }
