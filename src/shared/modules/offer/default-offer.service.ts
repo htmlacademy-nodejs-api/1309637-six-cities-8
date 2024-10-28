@@ -14,7 +14,7 @@ import { COMPONENT, DEFAULT_OFFER_COUNT } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
 import { ESortType } from '../../types/index.js';
 
-const MOCK_USER = '66f947e7e706754fb39b93a7';
+// const MOCK_USER = '66f947e7e706754fb39b93a7';
 
 @injectable()
 export class DefaultOfferService implements IOfferService {
@@ -34,23 +34,31 @@ export class DefaultOfferService implements IOfferService {
     const result = await this.offerModel
       .aggregate([
         { $match: { '_id': new Types.ObjectId(offerId) } },
-        {
-          $lookup: {
-            from: 'users',
-            pipeline: [
-              { $match: { '_id': new Types.ObjectId(MOCK_USER) } },
-              // { $match: { $expr: {
-              //   $and: { $in: ['$favorites', offerId] }
-              // } } }
-            ],
-            as: 'isFavorite'
-          },
-        },
-        { $unwind: '$isFavorite' },
         ...populateCommentsCount,
         ...populateAuthor,
+        // {
+        //   $lookup: {
+        //     from: 'users',
+        //     pipeline: [
+        //       { $match: { '_id': new Types.ObjectId(MOCK_USER) } },
+        //       { $project: { favorites: 1 } }
+        //     ],
+        //     as: 'currentUser'
+        //   },
+        // },
+        // { $unwind: '$currentUser' },
       ])
       .exec();
+
+    // if (result[0]) {
+    //   const offer = result[0];
+
+    //   offer.isFavorite = offer.currentUser.favorites
+    //     .map((f: ObjectId) => f.toString()).includes(offerId);
+    //   delete offer.currentUser;
+
+    //   return offer;
+    // }
 
     return result[0] || null;
   }

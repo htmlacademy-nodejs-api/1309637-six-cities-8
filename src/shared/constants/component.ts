@@ -9,8 +9,8 @@ export const COMPONENT = {
   OFFER_SERVICE: Symbol(),
   COMMENT_MODEL: Symbol(),
   COMMENT_SERVICE: Symbol(),
-  OFFER_CONTROLLER:Symbol(),
-  EXCEPTION_FILTER:Symbol(),
+  OFFER_CONTROLLER: Symbol(),
+  EXCEPTION_FILTER: Symbol(),
   USER_CONTROLLER: Symbol(),
   COMMENT_CONTROLLER: Symbol(),
 };

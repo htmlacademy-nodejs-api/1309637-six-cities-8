@@ -11,6 +11,7 @@ import { IConfig, TRestSchema } from '../../libs/config/types/index.js';
 import { fillDTO } from '../../helpers/index.js';
 import { UserRDO } from './index.js';
 import { TParamOfferId } from '../offer/types/index.js';
+import { ShortOfferRDO } from '../offer/index.js';
 
 const MOCK_USER = '66f947e7e706754fb39b93a7';
 
@@ -71,8 +72,9 @@ export class UserController extends BaseController {
     );
   }
 
-  public async showFavorites(_req: Request, _res: Response): Promise<void> {
-    //
+  public async showFavorites(_req: Request, res: Response): Promise<void> {
+    const result = await this.userService.getFavorites(MOCK_USER);
+    this.ok(res, fillDTO(ShortOfferRDO, result));
   }
 
   public async addFavorite({ params }: Request<TParamOfferId>, res: Response): Promise<void> {

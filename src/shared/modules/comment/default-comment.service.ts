@@ -17,7 +17,6 @@ export class DefaultCommentService implements ICommentService {
   ) {}
 
   public async create(dto: CreateCommentDTO, offerId: string): Promise<DocumentType<CommentEntity>> {
-    console.log(dto);
     const result = await this.commentModel.create({
       ...dto,
       offerId,

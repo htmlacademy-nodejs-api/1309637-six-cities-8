@@ -1,9 +1,10 @@
-import { Expose, Type } from 'class-transformer';
+import { Expose, Type, Transform } from 'class-transformer';
 import { EFacilities, EHousing, TCoords } from '../../../types/index.js';
 import { UserRDO } from '../../user/index.js';
 
 export class FullOfferRDO {
-  @Expose({ name: '_id' })
+  @Expose()
+  @Transform((value) => value.obj._id.toString())
   public id!: string;
 
   @Expose()

@@ -4,7 +4,7 @@ import {
   prop,
   modelOptions,
   Ref,
-  Severity
+  Severity,
 } from '@typegoose/typegoose';
 
 import { EHousing, EFacilities, TCoords } from '../../types/index.js';

@@ -27,7 +27,6 @@ export class CommentController extends BaseController {
 
   public async index({ params }: Request<TParamOfferId>, res: Response): Promise<void> {
     const comments = await this.commentService.findByOfferId(params.offerId);
-    console.log(comments);
     this.ok(res, fillDTO(CommentRDO, comments));
   }
 

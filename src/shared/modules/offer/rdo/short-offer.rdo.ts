@@ -1,8 +1,9 @@
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 import { EHousing } from '../../../types/index.js';
 
 export class ShortOfferRDO {
-  @Expose({ name: '_id' })
+  @Expose()
+  @Transform((value) => value.obj._id.toString())
   public id!: string;
 
   @Expose()
@@ -20,9 +21,8 @@ export class ShortOfferRDO {
   @Expose()
   public isPremium!: boolean;
 
-  // TODO
-  // @Expose()
-  // public isPremium!: boolean;
+  @Expose()
+  public isFavorite!: boolean;
 
   @Expose()
   public housingType!: EHousing;

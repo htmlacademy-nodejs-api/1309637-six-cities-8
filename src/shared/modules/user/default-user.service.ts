@@ -6,6 +6,7 @@ import { IUserService } from './types/index.js';
 import { UserEntity, CreateUserDTO, UpdateUserDTO, populateFavorites } from './index.js';
 import { COMPONENT } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
+import { OfferEntity } from '../offer/index.js';
 
 @injectable()
 export class DefaultUserService implements IUserService {
@@ -48,6 +49,33 @@ export class DefaultUserService implements IUserService {
     return this.userModel
       .findByIdAndUpdate(userId, dto, { new: true })
       .exec();
+  }
+
+  public async getFavorites(userId: string): Promise<DocumentType<OfferEntity[]> | null> {
+    const result = await this.userModel
+      .aggregate([
+        { $match: { _id: new Types.ObjectId(userId) } },
+        { $project: { favorites: 1 } },
+        { $unwind: '$favorites' },
+        {
+          $lookup: {
+            from: 'offers',
+            localField: 'favorites',
+            foreignField: '_id',
+            as: 'favoriteObjects',
+          }
+        },
+        { $unwind: '$favoriteObjects' },
+        {
+          $group: {
+            _id: '$_id',
+            favoriteObjects: { $push: '$favoriteObjects' }
+          }
+        },
+      ])
+      .exec();
+
+    return result[0] ? result[0].favoriteObjects : null;
   }
 
   public async addFavorite(userId: string ,offerId: string): Promise<DocumentType<UserEntity> | null> {
