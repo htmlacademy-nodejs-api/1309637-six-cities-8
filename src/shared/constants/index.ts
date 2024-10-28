@@ -7,6 +7,7 @@ export {
   PRICE,
   DEFAULT_OFFER_COUNT,
   INC_COMMENT_COUNT_NUMBER,
+  PHOTOS_LENGTH,
 } from './offer.js';
 
 export {

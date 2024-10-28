@@ -1,4 +1,4 @@
 export enum EUserType {
-    Regular = 'обычный',
-    Pro = 'pro',
+  Regular = 'обычный',
+  Pro = 'pro',
 }

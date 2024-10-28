@@ -4,6 +4,7 @@ import { EUserType, IUser } from '../../types/index.js';
 import { createSHA256 } from '../../helpers/index.js';
 import { OfferEntity } from '../offer/index.js';
 import { DEFAULT_AVATAR } from '../../constants/index.js';
+import { CreateUserDTO } from './index.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface UserEntity extends defaultClasses.Base {}
@@ -20,7 +21,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements IUser {
   @prop({ unique: true, required: true })
   public email: string;
 
-  @prop({ required: true })
+  @prop()
   public avatarPath: string;
 
   @prop({ required: true })
@@ -33,13 +34,12 @@ export class UserEntity extends defaultClasses.TimeStamps implements IUser {
   private password?: string;
 
   @prop({
-    required: true,
     ref: () => OfferEntity,
     default: [],
   })
   public favorites?: Ref<OfferEntity>[];
 
-  constructor(userData: IUser, password: string, salt: string) {
+  constructor(userData: CreateUserDTO, password: string, salt: string) {
     super();
 
     this.email = userData.email;

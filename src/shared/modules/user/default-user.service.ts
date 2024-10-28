@@ -3,7 +3,7 @@ import { DocumentType, types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 
 import { IUserService } from './types/index.js';
-import { UserEntity, CreateUserDTO, UpdateUserDTO, populateFavorites } from './index.js';
+import { UserEntity, CreateUserDTO, populateFavorites } from './index.js';
 import { COMPONENT } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
 import { OfferEntity } from '../offer/index.js';
@@ -45,12 +45,6 @@ export class DefaultUserService implements IUserService {
     return this.create(dto, salt);
   }
 
-  public async updateById(userId: string, dto: UpdateUserDTO): Promise<DocumentType<UserEntity> | null> {
-    return this.userModel
-      .findByIdAndUpdate(userId, dto, { new: true })
-      .exec();
-  }
-
   public async getFavorites(userId: string): Promise<DocumentType<OfferEntity[]> | null> {
     const result = await this.userModel
       .aggregate([
@@ -74,6 +68,7 @@ export class DefaultUserService implements IUserService {
         },
       ])
       .exec();
+      // TODO aggregate offers
 
     return result[0] ? result[0].favoriteObjects : null;
   }

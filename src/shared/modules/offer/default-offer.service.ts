@@ -23,6 +23,11 @@ export class DefaultOfferService implements IOfferService {
     @inject(COMPONENT.OFFER_MODEL) private readonly offerModel: types.ModelType<OfferEntity>,
   ) {}
 
+  public async exists(documentId: string): Promise<boolean> {
+    return await this.offerModel
+      .exists({_id: documentId}) !== null;
+  }
+
   public async create(dto: CreateOfferDTO): Promise<DocumentType<OfferEntity>> {
     const result = await this.offerModel.create(dto);
     this.logger.info(`New offer created: ${dto.title}`);
