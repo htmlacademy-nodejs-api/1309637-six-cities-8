@@ -3,9 +3,11 @@ import { types } from '@typegoose/typegoose';
 
 import { IOfferService } from './types/index.js';
 import { COMPONENT } from '../../constants/index.js';
-import { DefaultOfferService, OfferEntity, OfferModel } from './index.js';
+import { DefaultOfferService } from './index.js';
 import { IController } from '../../../rest/types/index.js';
 import { OfferController } from './index.js';
+import { OfferModel } from '../index.js';
+import { OfferEntity } from './offer.entity.js';
 
 export function createOfferContainer() {
   const offerContainer = new Container();

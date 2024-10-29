@@ -3,10 +3,11 @@ import { inject, injectable } from 'inversify';
 import { Types } from 'mongoose';
 
 import { ICommentService } from './types/index.js';
-import { CommentEntity, CreateCommentDTO } from './index.js';
+import { CreateCommentDTO } from './index.js';
 import { COMPONENT, DEFAULT_COMMENTS_COUNT } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
 import { ESortType } from '../../types/sort-type.enum.js';
+import { CommentEntity } from './comment.entity.js';
 
 @injectable()
 export class DefaultCommentService implements ICommentService {

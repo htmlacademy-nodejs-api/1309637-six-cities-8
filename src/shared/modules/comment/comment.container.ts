@@ -3,9 +3,11 @@ import { types } from '@typegoose/typegoose';
 
 import { ICommentService } from './types/index.js';
 import { COMPONENT } from '../../constants/index.js';
-import { DefaultCommentService, CommentEntity, CommentModel } from './index.js';
+import { DefaultCommentService } from './index.js';
 import { IController } from '../../../rest/types/index.js';
 import { CommentController } from './index.js';
+import { CommentModel } from '../index.js';
+import { CommentEntity } from './comment.entity.js';
 
 export function createCommentContainer() {
   const commentContainer = new Container();

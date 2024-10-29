@@ -3,10 +3,11 @@ import { DocumentType, types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 
 import { IUserService } from './types/index.js';
-import { UserEntity, CreateUserDTO, populateFavorites } from './index.js';
+import { CreateUserDTO, populateFavorites } from './index.js';
 import { COMPONENT } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
-import { OfferEntity } from '../offer/index.js';
+import { OfferEntity } from '../offer/offer.entity.js';
+import { UserEntity } from '../user/user.entity.js';
 
 @injectable()
 export class DefaultUserService implements IUserService {

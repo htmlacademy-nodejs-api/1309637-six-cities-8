@@ -4,7 +4,6 @@ import { inject, injectable } from 'inversify';
 
 import { IOfferService } from './types/index.js';
 import {
-  OfferEntity,
   CreateOfferDTO,
   UpdateOfferDTO,
   populateAuthor,
@@ -13,6 +12,7 @@ import {
 import { COMPONENT, DEFAULT_OFFER_COUNT } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
 import { ESortType } from '../../types/index.js';
+import { OfferEntity } from './offer.entity.js';
 
 // const MOCK_USER = '66f947e7e706754fb39b93a7';
 

@@ -1,8 +1,13 @@
-import { defaultClasses, getModelForClass, prop, modelOptions, Ref } from '@typegoose/typegoose';
+import {
+  defaultClasses,
+  prop,
+  modelOptions,
+  Ref,
+} from '@typegoose/typegoose';
 
 import { EUserType, IUser } from '../../types/index.js';
 import { createSHA256 } from '../../helpers/index.js';
-import { OfferEntity } from '../offer/index.js';
+import { OfferEntity } from '../offer/offer.entity.js';
 import { DEFAULT_AVATAR } from '../../constants/index.js';
 import { CreateUserDTO } from './index.js';
 
@@ -58,5 +63,3 @@ export class UserEntity extends defaultClasses.TimeStamps implements IUser {
     this.password = createSHA256(password, salt);
   }
 }
-
-export const UserModel = getModelForClass(UserEntity);
