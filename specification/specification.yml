@@ -174,7 +174,7 @@ paths:
       description: Возвращает список предложений по аренде
 
       parameters:
-        - name: length
+        - name: count
           in: query
           schema:
             type: integer
@@ -247,6 +247,32 @@ paths:
 
         "404":
           description: Предложение с таким id не найдено.
+
+  /offers/premium:
+    post:
+      tags:
+        - offers
+      summary: Получение списка премиальных предложений для города
+      description: Возвращает список премиальных предложений для города
+
+      requestBody:
+        description: Информация для премиального списка.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/premiumOffers'
+        required: true
+
+      responses:
+        "200":
+          description: Массив премиальных предложений.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offers'
+
+        "400":
+          description: Некорректный город.
 
   /comments/{offerId}:
     get:
@@ -479,6 +505,13 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/offer'
+
+    premiumOffers:
+      type: object
+      properties:
+        city:
+          type: string
+          example: Paris
 
     comment:
       type: object

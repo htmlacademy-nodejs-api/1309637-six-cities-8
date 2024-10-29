@@ -8,6 +8,7 @@ export {
   DEFAULT_OFFER_COUNT,
   INC_COMMENT_COUNT_NUMBER,
   PHOTOS_LENGTH,
+  MAX_PREMIUM_NUMBER,
 } from './offer.js';
 
 export {

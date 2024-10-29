@@ -1,9 +1,9 @@
-import { EFacilities, TCoords, EHousing, IUser } from './index.js';
+import { EFacilities, TCoords, EHousing, IUser, ECity } from './index.js';
 
 export interface IOffer {
   title: string;
   description: string;
-  city: string;
+  city: ECity;
   previewImagePath: string;
   photos: string[];
   isPremium: boolean;

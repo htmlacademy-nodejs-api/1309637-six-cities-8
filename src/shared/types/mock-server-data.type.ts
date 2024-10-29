@@ -1,9 +1,9 @@
-import { EFacilities, EHousing, EUserType } from './index.js';
+import { EFacilities, EHousing, EUserType, ECity } from './index.js';
 
 export type TMockServerData = {
   titles: string[];
   descriptions: string[];
-  cities: string[];
+  cities: ECity[];
   images: string[];
   housingTypes: EHousing[];
   facilities: EFacilities[];

@@ -35,3 +35,5 @@ export const PHOTOS_LENGTH = 6;
 export const DEFAULT_OFFER_COUNT = 60;
 
 export const INC_COMMENT_COUNT_NUMBER = 1;
+
+export const MAX_PREMIUM_NUMBER = 3;

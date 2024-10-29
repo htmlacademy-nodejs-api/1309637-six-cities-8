@@ -41,7 +41,7 @@ export class UpdateOfferDTO {
 
   @IsOptional()
   @IsEnum(ECity)
-  public city?: string;
+  public city?: ECity;
 
   @IsOptional()
   @IsString()

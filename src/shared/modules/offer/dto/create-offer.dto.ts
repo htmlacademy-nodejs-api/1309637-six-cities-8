@@ -37,7 +37,7 @@ export class CreateOfferDTO {
   public description!: string;
 
   @IsEnum(ECity)
-  public city!: string;
+  public city!: ECity;
 
   @IsString()
   public previewImagePath!: string;

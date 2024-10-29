@@ -13,7 +13,13 @@ import { EHttpMethod } from '../../../rest/types/index.js';
 import { COMPONENT, RADIX } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
 import { IOfferService, TQueryCount } from './types/index.js';
-import { CreateOfferDTO, ShortOfferRDO, UpdateOfferDTO, FullOfferRDO } from './index.js';
+import {
+  CreateOfferDTO,
+  ShortOfferRDO,
+  UpdateOfferDTO,
+  FullOfferRDO,
+  PremiumOfferDTO,
+} from './index.js';
 import { fillDTO } from '../../helpers/index.js';
 
 @injectable()
@@ -32,6 +38,12 @@ export class OfferController extends BaseController {
       method: EHttpMethod.Post,
       handler: this.create,
       middlewares: [new ValidateDTOMiddleware(CreateOfferDTO)]
+    });
+    this.addRoute({
+      path: '/premium',
+      method: EHttpMethod.Post,
+      handler: this.premium,
+      middlewares: [new ValidateDTOMiddleware(PremiumOfferDTO)]
     });
     this.addRoute({
       path: '/:offerId',
@@ -101,6 +113,14 @@ export class OfferController extends BaseController {
     res: Response,
   ): Promise<void> {
     const result = await this.offerService.updateById(req.params.offerId, req.body as UpdateOfferDTO);
+    this.ok(res, fillDTO(FullOfferRDO, result));
+  }
+
+  public async premium(
+    { body }: Request<Record<string, unknown>, Record<string, unknown>, PremiumOfferDTO>,
+    res: Response,
+  ): Promise<void> {
+    const result = await this.offerService.findPremium(body.city);
     this.ok(res, fillDTO(FullOfferRDO, result));
   }
 }

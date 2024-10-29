@@ -9,9 +9,9 @@ import {
   populateAuthor,
   populateCommentsCount,
 } from './index.js';
-import { COMPONENT, DEFAULT_OFFER_COUNT } from '../../constants/index.js';
+import { COMPONENT, DEFAULT_OFFER_COUNT, MAX_PREMIUM_NUMBER } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
-import { ESortType } from '../../types/index.js';
+import { ECity, ESortType } from '../../types/index.js';
 import { OfferEntity } from './offer.entity.js';
 
 // const MOCK_USER = '66f947e7e706754fb39b93a7';
@@ -78,6 +78,19 @@ export class DefaultOfferService implements IOfferService {
         { $limit: limit },
       ])
       .exec();
+  }
+
+  public async findPremium(city: ECity): Promise<DocumentType<OfferEntity>[]> {
+    return this.offerModel
+      .aggregate([
+        { $match: {
+          city,
+          isPremium: true,
+        } },
+        ...populateCommentsCount,
+        { $sort: { createdAt: ESortType.DESC } },
+        { $limit: MAX_PREMIUM_NUMBER },
+      ]);
   }
 
   public async updateById(offerId: string, dto: UpdateOfferDTO): Promise<DocumentType<OfferEntity> | null> {
