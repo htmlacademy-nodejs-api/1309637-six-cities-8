@@ -11,7 +11,8 @@ Content-Type: application/json
 
 {
   "text": "asddfsdasc 23dfsdfsdf sdfs",
-  "authorId": "66f947e7e706754fb39b93a7"
+  "authorId": "66f947e7e706754fb39b93a7",
+  "rating": 4
 }
 
 ###

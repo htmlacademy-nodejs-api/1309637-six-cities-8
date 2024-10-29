@@ -24,8 +24,8 @@ export class DefaultOfferService implements IOfferService {
   ) {}
 
   public async exists(documentId: string): Promise<boolean> {
-    return await this.offerModel
-      .exists({_id: documentId}) !== null;
+    return this.offerModel
+      .exists({_id: documentId}).then(((resolve) => !!resolve));
   }
 
   public async create(dto: CreateOfferDTO): Promise<DocumentType<OfferEntity>> {

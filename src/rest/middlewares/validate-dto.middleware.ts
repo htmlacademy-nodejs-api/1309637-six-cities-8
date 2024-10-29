@@ -12,7 +12,7 @@ export class ValidateDTOMiddleware implements IMiddleware {
     const dtoInstance = plainToInstance(this.dto, body);
     const errors = await validate(dtoInstance);
 
-    if (errors.length > 0) {
+    if (errors.length) {
       res.status(StatusCodes.BAD_REQUEST).send(errors);
       return;
     }

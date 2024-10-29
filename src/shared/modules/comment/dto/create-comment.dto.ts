@@ -1,14 +1,17 @@
-import { IsMongoId, MinLength, MaxLength, IsString } from 'class-validator';
+import { IsMongoId, IsString, IsInt, Min, Max, Length } from 'class-validator';
 
-import { COMMENT_TEXT_LENGTH } from '../../../constants/index.js';
-import { CreateCommentValidationMessage } from './create-comment.message.js';
+import { COMMENT_RATING, COMMENT_TEXT_LENGTH } from '../../../constants/index.js';
 
 export class CreateCommentDTO {
-  @IsString({ message: CreateCommentValidationMessage.text.invalidFormat })
-  @MinLength(COMMENT_TEXT_LENGTH.MIN, { message: CreateCommentValidationMessage.text.minLength })
-  @MaxLength(COMMENT_TEXT_LENGTH.MAX, { message: CreateCommentValidationMessage.text.maxLength })
+  @IsString()
+  @Length(COMMENT_TEXT_LENGTH.MIN, COMMENT_TEXT_LENGTH.MAX)
   public text!: string;
 
-  @IsMongoId({ message: CreateCommentValidationMessage.authorId.invalid })
+  @IsMongoId()
   public authorId!: string;
+
+  @IsInt()
+  @Min(COMMENT_RATING.MIN)
+  @Max(COMMENT_RATING.MAX)
+  public rating!: number;
 }

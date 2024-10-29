@@ -1,7 +1,6 @@
 import {
   IsString,
-  MinLength,
-  MaxLength,
+  Length,
   IsEnum,
   IsEmail,
   IsOptional,
@@ -9,26 +8,23 @@ import {
 
 import { USER_NAME_LENGTH, USER_PASSWORD_LENGTH } from '../../../constants/index.js';
 import { EUserType } from '../../../types/index.js';
-import { UserValidationMessage } from './user.message.js';
 
 export class CreateUserDTO {
-  @IsEmail({}, { message: UserValidationMessage.email.invalidFormat })
+  @IsEmail()
   public email!: string;
 
-  @IsString({ message: UserValidationMessage.name.invalidFormat })
-  @MinLength(USER_NAME_LENGTH.MIN, { message: UserValidationMessage.name.minLength })
-  @MaxLength(USER_NAME_LENGTH.MAX, { message: UserValidationMessage.name.maxLength })
+  @IsString()
+  @Length(USER_NAME_LENGTH.MIN, USER_NAME_LENGTH.MAX)
   public name!: string;
 
   @IsOptional()
-  @IsString({ message: UserValidationMessage.avatarPath.invalidFormat })
+  @IsString()
   public avatarPath?: string;
 
-  @IsEnum(EUserType, { message: UserValidationMessage.type.invalid })
+  @IsEnum(EUserType)
   public type!: EUserType;
 
-  @IsString({ message: UserValidationMessage.password.invalidFormat })
-  @MinLength(USER_PASSWORD_LENGTH.MIN, { message: UserValidationMessage.password.minLength })
-  @MaxLength(USER_PASSWORD_LENGTH.MAX, { message: UserValidationMessage.password.maxLength })
+  @IsString()
+  @Length(USER_PASSWORD_LENGTH.MIN, USER_PASSWORD_LENGTH.MAX)
   public password!: string;
 }

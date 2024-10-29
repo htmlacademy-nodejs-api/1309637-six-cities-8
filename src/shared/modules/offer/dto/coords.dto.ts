@@ -1,10 +1,9 @@
-import { IsInt } from 'class-validator';
-import { OfferValidationMessage } from './offer.message.js';
+import { IsNumber } from 'class-validator';
 
 export class CoordsDTO {
-  @IsInt({ message: OfferValidationMessage.coords.latitude.invalidFormat })
+  @IsNumber()
   public latitude!: number;
 
-  @IsInt({ message: OfferValidationMessage.coords.longitude.invalidFormat })
+  @IsNumber()
   public longitude!: number;
 }

@@ -1,10 +1,10 @@
 import { inject, injectable } from 'inversify';
 import { Request, Response } from 'express';
-// import { StatusCodes } from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 
 import {
   BaseController,
-  // HttpError,
+  HttpError,
   ValidateObjectIdMiddleware,
   ValidateDTOMiddleware,
   DocumentExistsMiddleware,
@@ -64,6 +64,13 @@ export class OfferController extends BaseController {
   }
 
   public async index({ query }: Request<unknown, unknown, unknown, TQueryCount>, res: Response): Promise<void> {
+    if (query.count !== undefined && !Number.parseInt(query.count as string, RADIX)) {
+      throw new HttpError(
+        StatusCodes.BAD_REQUEST,
+        'Count query must be an integer',
+        'UserController',
+      );
+    }
     const offers = await this.offerService.find(Number.parseInt(query?.count as string, RADIX));
     const responseData = fillDTO(ShortOfferRDO, offers);
     this.ok(res, responseData);
