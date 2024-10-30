@@ -6,3 +6,4 @@ export { HttpError } from './http-error.js';
 export { ValidateObjectIdMiddleware } from './middlewares/validate-objectid.middleware.js';
 export { ValidateDTOMiddleware } from './middlewares/validate-dto.middleware.js';
 export { DocumentExistsMiddleware } from './middlewares/document-exists.middleware.js';
+export { UploadFileMiddleware } from './middlewares/upload-file.middleware.js';

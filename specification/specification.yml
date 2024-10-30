@@ -142,6 +142,20 @@ paths:
         "401":
           description: "Пользоваетель не авторизован"
 
+  /user/avatar:
+    post:
+      tags:
+        - users
+      summary: Добавление аватара
+      description: Добавляет аватар
+
+    responses:
+      "201":
+        description: Аватар добавлен
+
+      "400":
+        description: Некорректный файл
+
   /offers:
     post:
       tags:

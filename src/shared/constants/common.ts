@@ -13,3 +13,5 @@ export const DB_CONNECT_RETRY = {
   COUNT: 5,
   TIMEOUT: 1000,
 };
+
+export const IMAGE_EXTENSIONS = ['jpg', 'png'];

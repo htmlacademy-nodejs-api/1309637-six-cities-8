@@ -33,4 +33,5 @@ export {
   LOG_FILE_PATH,
   FILE_TRANSPORT_TARGET,
   DB_CONNECT_RETRY,
+  IMAGE_EXTENSIONS,
 } from './common.js';
