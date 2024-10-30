@@ -3,17 +3,19 @@ import { DocumentType, types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 
 import { IUserService } from './types/index.js';
-import { CreateUserDTO, populateFavorites } from './index.js';
+import { CreateUserDTO } from './index.js';
 import { COMPONENT } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
 import { OfferEntity } from '../offer/offer.entity.js';
 import { UserEntity } from '../user/user.entity.js';
+import { getIsFavorite, populateComments } from '../offer/index.js';
 
 @injectable()
 export class DefaultUserService implements IUserService {
   constructor(
     @inject(COMPONENT.LOGGER) private readonly logger: ILogger,
     @inject(COMPONENT.USER_MODEL) private readonly userModel: types.ModelType<UserEntity>,
+    @inject(COMPONENT.OFFER_MODEL) private readonly offerModel: types.ModelType<OfferEntity>,
   ) {}
 
   public async create(dto: CreateUserDTO, salt: string): Promise<DocumentType<UserEntity>> {
@@ -29,7 +31,6 @@ export class DefaultUserService implements IUserService {
     const result = await this.userModel
       .aggregate([
         { $match: { email } },
-        populateFavorites
       ])
       .exec();
 
@@ -46,32 +47,16 @@ export class DefaultUserService implements IUserService {
     return this.create(dto, salt);
   }
 
-  public async getFavorites(userId: string): Promise<DocumentType<OfferEntity[]> | null> {
-    const result = await this.userModel
+  public async getFavorites(userId: string): Promise<DocumentType<OfferEntity>[]> {
+    const result = await this.offerModel
       .aggregate([
-        { $match: { _id: new Types.ObjectId(userId) } },
-        { $project: { favorites: 1 } },
-        { $unwind: '$favorites' },
-        {
-          $lookup: {
-            from: 'offers',
-            localField: 'favorites',
-            foreignField: '_id',
-            as: 'favoriteObjects',
-          }
-        },
-        { $unwind: '$favoriteObjects' },
-        {
-          $group: {
-            _id: '$_id',
-            favoriteObjects: { $push: '$favoriteObjects' }
-          }
-        },
+        ...populateComments,
+        ...getIsFavorite(userId),
+        { $match: { isFavorite: true }}
       ])
       .exec();
-      // TODO aggregate offers
 
-    return result[0] ? result[0].favoriteObjects : null;
+    return result;
   }
 
   public async addFavorite(userId: string ,offerId: string): Promise<DocumentType<UserEntity> | null> {

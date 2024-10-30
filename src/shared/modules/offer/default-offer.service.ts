@@ -7,14 +7,15 @@ import {
   CreateOfferDTO,
   UpdateOfferDTO,
   populateAuthor,
-  populateCommentsCount,
+  populateComments,
+  getIsFavorite,
 } from './index.js';
 import { COMPONENT, DEFAULT_OFFER_COUNT, MAX_PREMIUM_NUMBER } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
 import { ECity, ESortType } from '../../types/index.js';
 import { OfferEntity } from './offer.entity.js';
 
-// const MOCK_USER = '66f947e7e706754fb39b93a7';
+const MOCK_USER = '66f947e7e706754fb39b93a7';
 
 @injectable()
 export class DefaultOfferService implements IOfferService {
@@ -39,31 +40,11 @@ export class DefaultOfferService implements IOfferService {
     const result = await this.offerModel
       .aggregate([
         { $match: { '_id': new Types.ObjectId(offerId) } },
-        ...populateCommentsCount,
+        ...populateComments,
         ...populateAuthor,
-        // {
-        //   $lookup: {
-        //     from: 'users',
-        //     pipeline: [
-        //       { $match: { '_id': new Types.ObjectId(MOCK_USER) } },
-        //       { $project: { favorites: 1 } }
-        //     ],
-        //     as: 'currentUser'
-        //   },
-        // },
-        // { $unwind: '$currentUser' },
+        ...getIsFavorite(MOCK_USER, offerId),
       ])
       .exec();
-
-    // if (result[0]) {
-    //   const offer = result[0];
-
-    //   offer.isFavorite = offer.currentUser.favorites
-    //     .map((f: ObjectId) => f.toString()).includes(offerId);
-    //   delete offer.currentUser;
-
-    //   return offer;
-    // }
 
     return result[0] || null;
   }
@@ -71,13 +52,16 @@ export class DefaultOfferService implements IOfferService {
   public async find(count?: number): Promise<DocumentType<OfferEntity>[]> {
     const limit = count || DEFAULT_OFFER_COUNT;
 
-    return this.offerModel
+    const result = await this.offerModel
       .aggregate([
-        ...populateCommentsCount,
-        { $sort: { createdAt: ESortType.DESC } },
+        ...populateComments,
+        ...getIsFavorite(MOCK_USER),
+        { $sort: { createdAt: ESortType.Desc } },
         { $limit: limit },
       ])
       .exec();
+
+    return result;
   }
 
   public async findPremium(city: ECity): Promise<DocumentType<OfferEntity>[]> {
@@ -87,8 +71,9 @@ export class DefaultOfferService implements IOfferService {
           city,
           isPremium: true,
         } },
-        ...populateCommentsCount,
-        { $sort: { createdAt: ESortType.DESC } },
+        ...populateComments,
+        ...getIsFavorite(MOCK_USER),
+        { $sort: { createdAt: ESortType.Desc } },
         { $limit: MAX_PREMIUM_NUMBER },
       ]);
   }

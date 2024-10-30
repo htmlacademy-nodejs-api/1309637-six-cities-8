@@ -31,5 +31,8 @@ export class ShortOfferRDO {
   public price!: number;
 
   @Expose()
+  public rating!: number;
+
+  @Expose()
   public commentsCount!: number;
 }

@@ -120,9 +120,18 @@ export class UserController extends BaseController {
   }
 
   public async addFavorite({ params }: Request<TParamOfferId>, res: Response): Promise<void> {
+    const favorites = await this.userService.getFavorites(MOCK_USER);
+
+    if (favorites.map((item) => item._id.toString()).includes(params.offerId)) {
+      throw new HttpError(
+        StatusCodes.CONFLICT,
+        `Offer ${params.offerId} is already in favorites`,
+        'UserController',
+      );
+    }
+
     const result = await this.userService.addFavorite(MOCK_USER, params.offerId);
     this.ok(res, fillDTO(UserRDO, result));
-    // TODO 409
   }
 
   public async deleteFavorite({ params }: Request<TParamOfferId>, res: Response): Promise<void> {

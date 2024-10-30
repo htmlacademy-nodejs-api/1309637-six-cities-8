@@ -7,6 +7,7 @@ export { DefaultOfferService } from './default-offer.service.js';
 export { createOfferContainer } from './offer.container.js';
 export {
   populateAuthor,
-  populateCommentsCount,
+  populateComments,
+  getIsFavorite,
 } from './offer.aggregation.js';
 export { OfferController } from './offer.controller.js';
