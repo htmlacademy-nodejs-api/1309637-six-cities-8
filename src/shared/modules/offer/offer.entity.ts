@@ -1,14 +1,13 @@
 import {
   defaultClasses,
-  getModelForClass,
   prop,
   modelOptions,
   Ref,
-  Severity
+  Severity,
 } from '@typegoose/typegoose';
 
 import { EHousing, EFacilities, TCoords } from '../../types/index.js';
-import { UserEntity } from '../user/index.js';
+import { UserEntity } from '../user/user.entity.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface OfferEntity extends defaultClasses.Base {}
@@ -68,12 +67,10 @@ export class OfferEntity extends defaultClasses.TimeStamps {
 
   @prop({
     required: true,
-    ref: 'UserEntity',
+    ref: () => UserEntity,
   })
   public authorId!: Ref<UserEntity>;
 
   @prop({ required: true })
   public coords!: TCoords;
 }
-
-export const OfferModel = getModelForClass(OfferEntity);

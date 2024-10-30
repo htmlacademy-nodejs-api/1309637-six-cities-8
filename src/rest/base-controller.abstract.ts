@@ -17,7 +17,9 @@ export abstract class BaseController implements IController {
 
   public addRoute(route: IRoute): void {
     const wrapperAsyncHandler = asyncHandler(route.handler.bind(this));
-    this.router[route.method](route.path, wrapperAsyncHandler);
+    const middlewareHandlers = route.middlewares?.map((item) => asyncHandler(item.execute.bind(item)));
+    const allHandlers = middlewareHandlers ? [...middlewareHandlers, wrapperAsyncHandler] : wrapperAsyncHandler;
+    this.router[route.method](route.path, allHandlers);
     this.logger.info(`Route registered: ${route.method.toUpperCase()} ${route.path}`);
   }
 

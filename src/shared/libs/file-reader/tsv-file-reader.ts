@@ -8,6 +8,7 @@ import {
   EFacilities,
   EUserType,
   TCoords,
+  ECity,
 } from '../../types/index.js';
 import { RADIX, CHUNK_SIZE } from '../../constants/index.js';
 
@@ -41,7 +42,7 @@ export class TSVFileReader extends EventEmitter implements IFileReader {
     return {
       title,
       description,
-      city,
+      city: city as ECity,
       previewImagePath,
       photos: this.parseSemiclonSeparatedValues<string[]>(photos),
       isPremium: this.parseBoolean(isPremium),

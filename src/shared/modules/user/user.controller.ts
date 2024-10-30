@@ -1,29 +1,69 @@
 import { inject, injectable } from 'inversify';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import { BaseController, HttpError } from '../../../rest/index.js';
+import {
+  BaseController,
+  HttpError,
+  ValidateObjectIdMiddleware,
+  ValidateDTOMiddleware,
+  DocumentExistsMiddleware,
+} from '../../../rest/index.js';
 import { EHttpMethod } from '../../../rest/types/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
 import { COMPONENT } from '../../constants/index.js';
 import { IUserService, TCreateUserRequest, TLoginUserRequest } from './types/index.js';
 import { IConfig, TRestSchema } from '../../libs/config/types/index.js';
 import { fillDTO } from '../../helpers/index.js';
-import { UserRDO } from './index.js';
+import { CreateUserDTO, LoginUserDTO, UserRDO } from './index.js';
+import { IOfferService, TParamOfferId } from '../offer/types/index.js';
+import { ShortOfferRDO } from '../offer/index.js';
+
+const MOCK_USER = '66f947e7e706754fb39b93a7';
 
 @injectable()
 export class UserController extends BaseController {
   constructor(
     @inject(COMPONENT.LOGGER) protected readonly logger: ILogger,
     @inject(COMPONENT.USER_SERVICE) private readonly userService: IUserService,
+    @inject(COMPONENT.OFFER_SERVICE) private readonly offerService: IOfferService,
     @inject(COMPONENT.CONFIG) private readonly config: IConfig<TRestSchema>,
   ) {
     super(logger);
 
     this.logger.info('Register routes for UserController...');
 
-    this.addRoute({ path: '/register', method: EHttpMethod.Post, handler: this.create });
-    this.addRoute({ path: '/login', method: EHttpMethod.Post, handler: this.login });
+    this.addRoute({
+      path: '/register',
+      method: EHttpMethod.Post,
+      handler: this.create,
+      middlewares: [new ValidateDTOMiddleware(CreateUserDTO)],
+    });
+    this.addRoute({
+      path: '/login',
+      method: EHttpMethod.Post,
+      handler: this.login,
+      middlewares: [new ValidateDTOMiddleware(LoginUserDTO)],
+    });
+    this.addRoute({ path: '/favorites/', method: EHttpMethod.Get, handler: this.showFavorites });
+    this.addRoute({
+      path: '/favorites/:offerId',
+      method: EHttpMethod.Post,
+      handler: this.addFavorite,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ],
+    });
+    this.addRoute({
+      path: '/favorites/:offerId',
+      method: EHttpMethod.Delete,
+      handler: this.deleteFavorite,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ],
+    });
   }
 
   public async create(
@@ -63,5 +103,21 @@ export class UserController extends BaseController {
       'Not implemented',
       'UserController',
     );
+  }
+
+  public async showFavorites(_req: Request, res: Response): Promise<void> {
+    const result = await this.userService.getFavorites(MOCK_USER);
+    this.ok(res, fillDTO(ShortOfferRDO, result));
+  }
+
+  public async addFavorite({ params }: Request<TParamOfferId>, res: Response): Promise<void> {
+    const result = await this.userService.addFavorite(MOCK_USER, params.offerId);
+    this.ok(res, fillDTO(UserRDO, result));
+    // TODO 409
+  }
+
+  public async deleteFavorite({ params }: Request<TParamOfferId>, res: Response): Promise<void> {
+    const result = await this.userService.deleteFavorite(MOCK_USER, params.offerId);
+    this.ok(res, fillDTO(UserRDO, result));
   }
 }

@@ -6,10 +6,12 @@ import { IOfferService } from '../../shared/modules/offer/types/index.js';
 import { IDatabaseClient } from '../../shared/libs/database-client/types/index.js';
 import { ILogger } from '../../shared/libs/logger/types/index.js';
 import { ConsoleLogger } from '../../shared/libs/logger/index.js';
-import { DefaultOfferService, OfferModel } from '../../shared/modules/offer/index.js';
-import { DefaultUserService, UserModel } from '../../shared/modules/user/index.js';
+import { DefaultOfferService } from '../../shared/modules/offer/index.js';
+import { DefaultUserService } from '../../shared/modules/user/index.js';
 import { MongoDatabaseClient } from '../../shared/libs/database-client/index.js';
 import { getMongoURI } from '../../shared/helpers/database.js';
+import { UserModel } from '../../shared/modules/index.js';
+import { OfferModel } from '../../shared/modules/index.js';
 
 const DEFAULT_DB_PORT = '27017';
 const DEFAULT_USER_PASSWORD = '123456';

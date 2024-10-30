@@ -1,10 +1,13 @@
+import { Types } from 'mongoose';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 
 import { IUserService } from './types/index.js';
-import { UserEntity, CreateUserDTO, UpdateUserDTO, populateFavorites } from './index.js';
+import { CreateUserDTO, populateFavorites } from './index.js';
 import { COMPONENT } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
+import { OfferEntity } from '../offer/offer.entity.js';
+import { UserEntity } from '../user/user.entity.js';
 
 @injectable()
 export class DefaultUserService implements IUserService {
@@ -43,16 +46,38 @@ export class DefaultUserService implements IUserService {
     return this.create(dto, salt);
   }
 
-  public async updateById(userId: string, dto: UpdateUserDTO): Promise<DocumentType<UserEntity> | null> {
-    return this.userModel
-      .findByIdAndUpdate(userId, dto, { new: true })
+  public async getFavorites(userId: string): Promise<DocumentType<OfferEntity[]> | null> {
+    const result = await this.userModel
+      .aggregate([
+        { $match: { _id: new Types.ObjectId(userId) } },
+        { $project: { favorites: 1 } },
+        { $unwind: '$favorites' },
+        {
+          $lookup: {
+            from: 'offers',
+            localField: 'favorites',
+            foreignField: '_id',
+            as: 'favoriteObjects',
+          }
+        },
+        { $unwind: '$favoriteObjects' },
+        {
+          $group: {
+            _id: '$_id',
+            favoriteObjects: { $push: '$favoriteObjects' }
+          }
+        },
+      ])
       .exec();
+      // TODO aggregate offers
+
+    return result[0] ? result[0].favoriteObjects : null;
   }
 
   public async addFavorite(userId: string ,offerId: string): Promise<DocumentType<UserEntity> | null> {
     return this.userModel
       .findByIdAndUpdate(userId, {
-        $addToSet: { favorites: offerId },
+        $addToSet: { favorites: new Types.ObjectId(offerId) },
       }, { new: true })
       .exec();
   }
@@ -60,7 +85,7 @@ export class DefaultUserService implements IUserService {
   public async deleteFavorite(userId: string, offerId: string): Promise<DocumentType<UserEntity> | null> {
     return this.userModel
       .findByIdAndUpdate(userId, {
-        $pull: { favorites: offerId },
+        $pull: { favorites: new Types.ObjectId(offerId) },
       }, { new: true })
       .exec();
   }

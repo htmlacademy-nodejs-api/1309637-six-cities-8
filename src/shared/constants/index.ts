@@ -7,11 +7,14 @@ export {
   PRICE,
   DEFAULT_OFFER_COUNT,
   INC_COMMENT_COUNT_NUMBER,
+  PHOTOS_LENGTH,
+  MAX_PREMIUM_NUMBER,
 } from './offer.js';
 
 export {
   USER_NAME_LENGTH,
   USER_PASSWORD_LENGTH,
+  DEFAULT_AVATAR,
 } from './user.js';
 
 export {

@@ -2,12 +2,24 @@ import { inject, injectable } from 'inversify';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import { BaseController, HttpError } from '../../../rest/index.js';
+import {
+  BaseController,
+  HttpError,
+  ValidateObjectIdMiddleware,
+  ValidateDTOMiddleware,
+  DocumentExistsMiddleware,
+} from '../../../rest/index.js';
 import { EHttpMethod } from '../../../rest/types/index.js';
-import { COMPONENT } from '../../constants/index.js';
+import { COMPONENT, RADIX } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
-import { IOfferService } from './types/index.js';
-import { CreateOfferDTO, ShortOfferRDO, UpdateOfferDTO, FullOfferRDO } from './index.js';
+import { IOfferService, TQueryCount } from './types/index.js';
+import {
+  CreateOfferDTO,
+  ShortOfferRDO,
+  UpdateOfferDTO,
+  FullOfferRDO,
+  PremiumOfferDTO,
+} from './index.js';
 import { fillDTO } from '../../helpers/index.js';
 
 @injectable()
@@ -21,14 +33,57 @@ export class OfferController extends BaseController {
     this.logger.info('Register routes for OfferController...');
 
     this.addRoute({ path: '/', method: EHttpMethod.Get, handler: this.index });
-    this.addRoute({ path: '/', method: EHttpMethod.Post, handler: this.create });
-    this.addRoute({ path: '/:offerId', method: EHttpMethod.Get, handler: this.findOne});
-    this.addRoute({ path: '/:offerId', method: EHttpMethod.Delete, handler: this.delete});
-    this.addRoute({ path: '/:offerId', method: EHttpMethod.Patch, handler: this.update});
+    this.addRoute({
+      path: '/',
+      method: EHttpMethod.Post,
+      handler: this.create,
+      middlewares: [new ValidateDTOMiddleware(CreateOfferDTO)]
+    });
+    this.addRoute({
+      path: '/premium',
+      method: EHttpMethod.Post,
+      handler: this.premium,
+      middlewares: [new ValidateDTOMiddleware(PremiumOfferDTO)]
+    });
+    this.addRoute({
+      path: '/:offerId',
+      method: EHttpMethod.Get,
+      handler: this.show,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ],
+    });
+    this.addRoute({
+      path: '/:offerId',
+      method: EHttpMethod.Delete,
+      handler: this.delete,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ],
+    });
+    this.addRoute({
+      path: '/:offerId',
+      method: EHttpMethod.Patch,
+      handler: this.update,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new ValidateDTOMiddleware(UpdateOfferDTO),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ],
+    });
   }
 
-  public async index(_req: Request, res: Response): Promise<void> {
-    const offers = await this.offerService.find();
+  public async index({ query }: Request<unknown, unknown, unknown, TQueryCount>, res: Response): Promise<void> {
+    if (query.count !== undefined && !Number.parseInt(query.count as string, RADIX)) {
+      throw new HttpError(
+        StatusCodes.BAD_REQUEST,
+        'Count query must be an integer',
+        'UserController',
+      );
+    }
+    const offers = await this.offerService.find(Number.parseInt(query?.count as string, RADIX));
     const responseData = fillDTO(ShortOfferRDO, offers);
     this.ok(res, responseData);
   }
@@ -41,16 +96,8 @@ export class OfferController extends BaseController {
     this.created(res, fillDTO(FullOfferRDO, result));
   }
 
-  public async findOne(req: Request, res: Response): Promise<void> {
+  public async show(req: Request, res: Response): Promise<void> {
     const existsOffer = await this.offerService.findById(req.params.offerId);
-
-    if (!existsOffer) {
-      throw new HttpError(
-        StatusCodes.NOT_FOUND,
-        `Offer with id ${req.params.offerId} not found.`,
-        'OfferController',
-      );
-    }
 
     const responseData = fillDTO(FullOfferRDO, existsOffer);
     this.ok(res, responseData);
@@ -58,7 +105,6 @@ export class OfferController extends BaseController {
 
   public async delete(req: Request, res: Response): Promise<void> {
     const result = await this.offerService.deleteById(req.params.offerId);
-
     this.noContent(res, result);
   }
 
@@ -67,15 +113,14 @@ export class OfferController extends BaseController {
     res: Response,
   ): Promise<void> {
     const result = await this.offerService.updateById(req.params.offerId, req.body as UpdateOfferDTO);
+    this.ok(res, fillDTO(FullOfferRDO, result));
+  }
 
-    if (!result) {
-      throw new HttpError(
-        StatusCodes.NOT_FOUND,
-        `Offer with id ${req.params.offerId} not found.`,
-        'OfferController',
-      );
-    }
-
+  public async premium(
+    { body }: Request<Record<string, unknown>, Record<string, unknown>, PremiumOfferDTO>,
+    res: Response,
+  ): Promise<void> {
+    const result = await this.offerService.findPremium(body.city);
     this.ok(res, fillDTO(FullOfferRDO, result));
   }
 }

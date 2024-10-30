@@ -6,3 +6,4 @@ export { TMockServerData } from './mock-server-data.type.js';
 export { IUser } from './user.interface.js';
 export { IOffer } from './offer.interface.js';
 export { ESortType } from './sort-type.enum.js';
+export { ECity } from './city.enum.js';

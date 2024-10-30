@@ -1,9 +1,9 @@
-import { Expose, Type } from 'class-transformer';
-import { EFacilities, EHousing, TCoords } from '../../../types/index.js';
-import { UserRDO } from '../../user/index.js';
+import { Expose, Transform } from 'class-transformer';
+import { EHousing } from '../../../types/index.js';
 
 export class ShortOfferRDO {
-  @Expose({ name: '_id' })
+  @Expose()
+  @Transform((value) => value.obj._id.toString())
   public id!: string;
 
   @Expose()
@@ -13,43 +13,23 @@ export class ShortOfferRDO {
   public title!: string;
 
   @Expose()
-  public description!: string;
-
-  @Expose()
   public city!: string;
 
   @Expose()
   public previewImagePath!: string;
 
   @Expose()
-  public photos!: string[];
+  public isPremium!: boolean;
 
   @Expose()
-  public isPremium!: boolean;
+  public isFavorite!: boolean;
 
   @Expose()
   public housingType!: EHousing;
 
   @Expose()
-  public roomsNumber!: number;
-
-  @Expose()
-  public visitorsNumber!: number;
-
-  @Expose()
   public price!: number;
 
   @Expose()
-  public facilities!: EFacilities;
-
-  @Expose()
-  public coords!: TCoords;
-
-  // TODO in next module
-  // @Expose()
-  // public commentsCount!: number;
-
-  @Expose()
-  @Type(() => UserRDO)
-  public author!: UserRDO;
+  public commentsCount!: number;
 }

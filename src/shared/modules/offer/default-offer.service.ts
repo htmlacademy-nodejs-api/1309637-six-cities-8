@@ -4,16 +4,17 @@ import { inject, injectable } from 'inversify';
 
 import { IOfferService } from './types/index.js';
 import {
-  OfferEntity,
   CreateOfferDTO,
   UpdateOfferDTO,
   populateAuthor,
-  // populateCommentsCount,
-  populateComments,
+  populateCommentsCount,
 } from './index.js';
-import { COMPONENT, DEFAULT_OFFER_COUNT, INC_COMMENT_COUNT_NUMBER } from '../../constants/index.js';
+import { COMPONENT, DEFAULT_OFFER_COUNT, MAX_PREMIUM_NUMBER } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
-import { ESortType } from '../../types/index.js';
+import { ECity, ESortType } from '../../types/index.js';
+import { OfferEntity } from './offer.entity.js';
+
+// const MOCK_USER = '66f947e7e706754fb39b93a7';
 
 @injectable()
 export class DefaultOfferService implements IOfferService {
@@ -21,6 +22,11 @@ export class DefaultOfferService implements IOfferService {
     @inject(COMPONENT.LOGGER) private readonly logger: ILogger,
     @inject(COMPONENT.OFFER_MODEL) private readonly offerModel: types.ModelType<OfferEntity>,
   ) {}
+
+  public async exists(documentId: string): Promise<boolean> {
+    return this.offerModel
+      .exists({_id: documentId}).then(((resolve) => !!resolve));
+  }
 
   public async create(dto: CreateOfferDTO): Promise<DocumentType<OfferEntity>> {
     const result = await this.offerModel.create(dto);
@@ -33,10 +39,31 @@ export class DefaultOfferService implements IOfferService {
     const result = await this.offerModel
       .aggregate([
         { $match: { '_id': new Types.ObjectId(offerId) } },
+        ...populateCommentsCount,
         ...populateAuthor,
-        ...populateComments,
+        // {
+        //   $lookup: {
+        //     from: 'users',
+        //     pipeline: [
+        //       { $match: { '_id': new Types.ObjectId(MOCK_USER) } },
+        //       { $project: { favorites: 1 } }
+        //     ],
+        //     as: 'currentUser'
+        //   },
+        // },
+        // { $unwind: '$currentUser' },
       ])
       .exec();
+
+    // if (result[0]) {
+    //   const offer = result[0];
+
+    //   offer.isFavorite = offer.currentUser.favorites
+    //     .map((f: ObjectId) => f.toString()).includes(offerId);
+    //   delete offer.currentUser;
+
+    //   return offer;
+    // }
 
     return result[0] || null;
   }
@@ -46,12 +73,24 @@ export class DefaultOfferService implements IOfferService {
 
     return this.offerModel
       .aggregate([
-        ...populateAuthor,
-        // ...populateCommentsCount,
+        ...populateCommentsCount,
         { $sort: { createdAt: ESortType.DESC } },
         { $limit: limit },
       ])
       .exec();
+  }
+
+  public async findPremium(city: ECity): Promise<DocumentType<OfferEntity>[]> {
+    return this.offerModel
+      .aggregate([
+        { $match: {
+          city,
+          isPremium: true,
+        } },
+        ...populateCommentsCount,
+        { $sort: { createdAt: ESortType.DESC } },
+        { $limit: MAX_PREMIUM_NUMBER },
+      ]);
   }
 
   public async updateById(offerId: string, dto: UpdateOfferDTO): Promise<DocumentType<OfferEntity> | null> {
@@ -63,12 +102,5 @@ export class DefaultOfferService implements IOfferService {
     return this.offerModel
       .findByIdAndDelete(offerId)
       .exec();
-  }
-
-  public async incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
-    return this.offerModel
-      .findByIdAndUpdate(offerId, {'$inc': {
-        commentCount: INC_COMMENT_COUNT_NUMBER,
-      }}).exec();
   }
 }
