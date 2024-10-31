@@ -44,6 +44,9 @@ export class FullOfferRDO {
   public price!: number;
 
   @Expose()
+  public rating!: number;
+
+  @Expose()
   public facilities!: EFacilities;
 
   @Expose()

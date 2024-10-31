@@ -8,6 +8,7 @@ import {
   ValidateObjectIdMiddleware,
   ValidateDTOMiddleware,
   DocumentExistsMiddleware,
+  UploadFileMiddleware,
 } from '../../../rest/index.js';
 import { EHttpMethod } from '../../../rest/types/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
@@ -64,6 +65,14 @@ export class UserController extends BaseController {
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
     });
+    this.addRoute({
+      path: '/avatar',
+      method: EHttpMethod.Post,
+      handler: this.uploadAvatar,
+      middlewares: [
+        new UploadFileMiddleware(this.config.get('UPLOAD_DIRECTORY'), 'avatarPath'),
+      ]
+    });
   }
 
   public async create(
@@ -111,13 +120,28 @@ export class UserController extends BaseController {
   }
 
   public async addFavorite({ params }: Request<TParamOfferId>, res: Response): Promise<void> {
+    const favorites = await this.userService.getFavorites(MOCK_USER);
+
+    if (favorites.map((item) => item._id.toString()).includes(params.offerId)) {
+      throw new HttpError(
+        StatusCodes.CONFLICT,
+        `Offer ${params.offerId} is already in favorites`,
+        'UserController',
+      );
+    }
+
     const result = await this.userService.addFavorite(MOCK_USER, params.offerId);
     this.ok(res, fillDTO(UserRDO, result));
-    // TODO 409
   }
 
   public async deleteFavorite({ params }: Request<TParamOfferId>, res: Response): Promise<void> {
     const result = await this.userService.deleteFavorite(MOCK_USER, params.offerId);
     this.ok(res, fillDTO(UserRDO, result));
+  }
+
+  public async uploadAvatar(req: Request, res: Response): Promise<void> {
+    this.created(res, {
+      filepath: req.file?.path
+    });
   }
 }

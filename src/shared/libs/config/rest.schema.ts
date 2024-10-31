@@ -60,4 +60,10 @@ export const configRestSchema = convict<TRestSchema>({
     env: 'DB_NAME',
     default: 'six-cities'
   },
+  UPLOAD_DIRECTORY: {
+    doc: 'Directory for upload files',
+    format: String,
+    env: 'UPLOAD_DIRECTORY',
+    default: null
+  }
 });

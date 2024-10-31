@@ -8,6 +8,7 @@
 .idea/*
 /mocks/test*
 /mocks/mock-data*
+/upload/
 
 .DS_Store
 coverage

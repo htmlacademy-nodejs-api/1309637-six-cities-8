@@ -42,7 +42,7 @@ export class DefaultCommentService implements ICommentService {
         },
         { $unwind: '$author' },
         { $limit:  DEFAULT_COMMENTS_COUNT },
-        { $sort: { createdDate: ESortType.DESC } }
+        { $sort: { createdDate: ESortType.Desc } }
       ])
       .exec();
   }
