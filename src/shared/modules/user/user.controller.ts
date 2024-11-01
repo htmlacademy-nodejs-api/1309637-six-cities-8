@@ -9,6 +9,7 @@ import {
   ValidateDTOMiddleware,
   DocumentExistsMiddleware,
   UploadFileMiddleware,
+  PrivateRouteMiddleware,
 } from '../../../rest/index.js';
 import { EHttpMethod } from '../../../rest/types/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
@@ -21,8 +22,6 @@ import { IOfferService, TParamOfferId } from '../offer/types/index.js';
 import { ShortOfferRDO } from '../offer/index.js';
 import { IAuthService } from '../auth/types/index.js';
 import { LoggedUserRDO } from './index.js';
-
-const MOCK_USER = '66f947e7e706754fb39b93a7';
 
 @injectable()
 export class UserController extends BaseController {
@@ -54,12 +53,18 @@ export class UserController extends BaseController {
       method: EHttpMethod.Get,
       handler: this.checkAuthenticate,
     });
-    this.addRoute({ path: '/favorites/', method: EHttpMethod.Get, handler: this.showFavorites });
+    this.addRoute({
+      path: '/favorites/',
+      method: EHttpMethod.Get,
+      handler: this.showFavorites,
+      middlewares: [new PrivateRouteMiddleware()]
+    });
     this.addRoute({
       path: '/favorites/:offerId',
       method: EHttpMethod.Post,
       handler: this.addFavorite,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
@@ -69,6 +74,7 @@ export class UserController extends BaseController {
       method: EHttpMethod.Delete,
       handler: this.deleteFavorite,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
@@ -78,6 +84,7 @@ export class UserController extends BaseController {
       method: EHttpMethod.Post,
       handler: this.uploadAvatar,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new UploadFileMiddleware(this.config.get('UPLOAD_DIRECTORY'), 'avatarPath'),
       ]
     });
@@ -114,13 +121,13 @@ export class UserController extends BaseController {
     this.ok(res, responseData);
   }
 
-  public async showFavorites(_req: Request, res: Response): Promise<void> {
-    const result = await this.userService.getFavorites(MOCK_USER);
+  public async showFavorites({ tokenPayload }: Request, res: Response): Promise<void> {
+    const result = await this.userService.getFavorites(tokenPayload.id);
     this.ok(res, fillDTO(ShortOfferRDO, result));
   }
 
-  public async addFavorite({ params }: Request<TParamOfferId>, res: Response): Promise<void> {
-    const favorites = await this.userService.getFavorites(MOCK_USER);
+  public async addFavorite({ params, tokenPayload }: Request<TParamOfferId>, res: Response): Promise<void> {
+    const favorites = await this.userService.getFavorites(tokenPayload.id);
 
     if (favorites.map((item) => item._id.toString()).includes(params.offerId)) {
       throw new HttpError(
@@ -130,12 +137,12 @@ export class UserController extends BaseController {
       );
     }
 
-    const result = await this.userService.addFavorite(MOCK_USER, params.offerId);
+    const result = await this.userService.addFavorite(tokenPayload.id, params.offerId);
     this.ok(res, fillDTO(UserRDO, result));
   }
 
-  public async deleteFavorite({ params }: Request<TParamOfferId>, res: Response): Promise<void> {
-    const result = await this.userService.deleteFavorite(MOCK_USER, params.offerId);
+  public async deleteFavorite({ params, tokenPayload }: Request<TParamOfferId>, res: Response): Promise<void> {
+    const result = await this.userService.deleteFavorite(tokenPayload.id, params.offerId);
     this.ok(res, fillDTO(UserRDO, result));
   }
 

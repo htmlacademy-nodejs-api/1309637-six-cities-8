@@ -81,7 +81,7 @@ export class OfferController extends BaseController {
     });
   }
 
-  public async index({ query }: Request<unknown, unknown, unknown, TQueryCount>, res: Response): Promise<void> {
+  public async index({ query, tokenPayload }: Request<unknown, unknown, unknown, TQueryCount>, res: Response): Promise<void> {
     if (query.count !== undefined && !Number.parseInt(query.count as string, RADIX)) {
       throw new HttpError(
         StatusCodes.BAD_REQUEST,
@@ -89,7 +89,10 @@ export class OfferController extends BaseController {
         'UserController',
       );
     }
-    const offers = await this.offerService.find(Number.parseInt(query?.count as string, RADIX));
+    const offers = await this.offerService.find(
+      Number.parseInt(query?.count as string, RADIX),
+      tokenPayload?.id,
+    );
     const responseData = fillDTO(ShortOfferRDO, offers);
     this.ok(res, responseData);
   }
@@ -102,31 +105,50 @@ export class OfferController extends BaseController {
     this.created(res, fillDTO(FullOfferRDO, result));
   }
 
-  public async show(req: Request, res: Response): Promise<void> {
-    const existsOffer = await this.offerService.findById(req.params.offerId);
+  public async show({ tokenPayload, params }: Request, res: Response): Promise<void> {
+    const existsOffer = await this.offerService.findById(params.offerId, tokenPayload?.id);
 
     const responseData = fillDTO(FullOfferRDO, existsOffer);
     this.ok(res, responseData);
   }
 
-  public async delete(req: Request, res: Response): Promise<void> {
-    const result = await this.offerService.deleteById(req.params.offerId);
+  public async delete({ tokenPayload, params }: Request, res: Response): Promise<void> {
+    if (! (await this.offerService.isOwnOffer(params.offerId, tokenPayload.id))) {
+      throw new HttpError(
+        StatusCodes.FORBIDDEN,
+        'Forbidden',
+        'OfferController',
+      );
+    }
+    const result = await this.offerService.deleteById(params.offerId, tokenPayload.id);
     this.noContent(res, result);
   }
 
   public async update(
-    req: Request,
+    { body, params, tokenPayload }: Request,
     res: Response,
   ): Promise<void> {
-    const result = await this.offerService.updateById(req.params.offerId, req.body as UpdateOfferDTO);
+    if (! (await this.offerService.isOwnOffer(params.offerId, tokenPayload.id))) {
+      throw new HttpError(
+        StatusCodes.FORBIDDEN,
+        'Forbidden',
+        'OfferController',
+      );
+    }
+
+    const result = await this.offerService.updateById(
+      params.offerId,
+      tokenPayload.id,
+      body as UpdateOfferDTO,
+    );
     this.ok(res, fillDTO(FullOfferRDO, result));
   }
 
   public async premium(
-    { body }: Request<Record<string, unknown>, Record<string, unknown>, PremiumOfferDTO>,
+    { body, tokenPayload }: Request<Record<string, unknown>, Record<string, unknown>, PremiumOfferDTO>,
     res: Response,
   ): Promise<void> {
-    const result = await this.offerService.findPremium(body.city);
+    const result = await this.offerService.findPremium(body.city, tokenPayload?.id);
     this.ok(res, fillDTO(FullOfferRDO, result));
   }
 }
