@@ -9,7 +9,10 @@ import { LoginUserDTO } from '../user/index.js';
 import { IUserService } from '../user/types/index.js';
 import { UserEntity } from '../user/user.entity.js';
 import { IConfig, TRestSchema } from '../../libs/config/types/index.js';
-import { UserNotFoundException, UserPasswordIncorrectException } from './errors/index.js';
+import {
+  UserNotFoundException,
+  UserPasswordIncorrectException,
+} from './errors/index.js';
 
 @injectable()
 export class DefualtAuthService implements IAuthService {
@@ -36,8 +39,9 @@ export class DefualtAuthService implements IAuthService {
       .sign(secretKey);
   }
 
-  public async verfy(dto: LoginUserDTO): Promise<UserEntity> {
+  public async verify(dto: LoginUserDTO): Promise<UserEntity> {
     const user = await this.userService.findByEmail(dto.email);
+
     if (!user) {
       this.logger.warn(`User with ${dto.email} not found`);
       throw new UserNotFoundException();

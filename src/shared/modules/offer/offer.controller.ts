@@ -8,6 +8,7 @@ import {
   ValidateObjectIdMiddleware,
   ValidateDTOMiddleware,
   DocumentExistsMiddleware,
+  PrivateRouteMiddleware,
 } from '../../../rest/index.js';
 import { EHttpMethod } from '../../../rest/types/index.js';
 import { COMPONENT, RADIX } from '../../constants/index.js';
@@ -37,7 +38,10 @@ export class OfferController extends BaseController {
       path: '/',
       method: EHttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDTOMiddleware(CreateOfferDTO)]
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDTOMiddleware(CreateOfferDTO),
+      ]
     });
     this.addRoute({
       path: '/premium',
@@ -59,6 +63,7 @@ export class OfferController extends BaseController {
       method: EHttpMethod.Delete,
       handler: this.delete,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
@@ -68,6 +73,7 @@ export class OfferController extends BaseController {
       method: EHttpMethod.Patch,
       handler: this.update,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new ValidateDTOMiddleware(UpdateOfferDTO),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
@@ -89,10 +95,10 @@ export class OfferController extends BaseController {
   }
 
   public async create(
-    { body }: Request<Record<string, unknown>, Record<string, unknown>, CreateOfferDTO>,
+    { body, tokenPayload }: Request<Record<string, unknown>, Record<string, unknown>, CreateOfferDTO>,
     res: Response,
   ): Promise<void> {
-    const result = await this.offerService.create(body);
+    const result = await this.offerService.create({ ...body, authorId: tokenPayload.id });
     this.created(res, fillDTO(FullOfferRDO, result));
   }
 

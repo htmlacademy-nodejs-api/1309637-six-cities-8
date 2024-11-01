@@ -1,5 +1,4 @@
 import {
-  IsMongoId,
   IsInt,
   IsString,
   IsEnum,
@@ -72,7 +71,6 @@ export class CreateOfferDTO {
   @ArrayUnique<EFacilities>()
   public facilities!: EFacilities[];
 
-  @IsMongoId()
   public authorId!: string;
 
   @ValidateNested()

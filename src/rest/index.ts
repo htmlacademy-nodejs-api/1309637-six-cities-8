@@ -7,3 +7,5 @@ export { ValidateObjectIdMiddleware } from './middlewares/validate-objectid.midd
 export { ValidateDTOMiddleware } from './middlewares/validate-dto.middleware.js';
 export { DocumentExistsMiddleware } from './middlewares/document-exists.middleware.js';
 export { UploadFileMiddleware } from './middlewares/upload-file.middleware.js';
+export { ParseTokenMiddleware } from './middlewares/parse-token.middleware.js';
+export { PrivateRouteMiddleware } from './middlewares/private-route.middleware.js';
