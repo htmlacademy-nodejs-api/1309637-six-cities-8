@@ -1,5 +1,6 @@
 import { inject, injectable } from 'inversify';
 import express, { Express } from 'express';
+import cors from 'cors';
 
 import { ILogger } from '../shared/libs/logger/types/index.js';
 import { IConfig, TRestSchema } from '../shared/libs/config/types/index.js';
@@ -55,6 +56,7 @@ export class RestApplication {
       express.static(this.config.get('UPLOAD_DIRECTORY')),
     );
     this.server.use(authenticateMiddleware.execute.bind(authenticateMiddleware));
+    this.server.use(cors());
   }
 
   private initExceptionFilters() {
