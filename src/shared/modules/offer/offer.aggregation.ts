@@ -53,20 +53,28 @@ export const populateComments = [
   { $unset: 'comments' },
 ];
 
-export const getIsFavorite = (userId: string, offerId: string = '') => ([
-  {
-    $lookup: {
-      from: 'users',
-      pipeline: [
-        { $match: { '_id': new Types.ObjectId(userId) } },
-        { $project: { favorites: 1 } }
-      ],
-      as: 'currentUser'
-    },
-  },
-  { $unwind: '$currentUser' },
-  { $addFields: { isFavorite: {
-    $in: [offerId ? new Types.ObjectId(offerId) : '$_id' , '$currentUser.favorites']
-  } }},
-  { $unset: 'currentUser' }
-]);
+export const getIsFavorite = (userId: string, offerId: string = '') => {
+  if (userId) {
+    return [
+      {
+        $lookup: {
+          from: 'users',
+          pipeline: [
+            { $match: { '_id': new Types.ObjectId(userId) } },
+            { $project: { favorites: 1 } }
+          ],
+          as: 'currentUser'
+        },
+      },
+      { $unwind: '$currentUser' },
+      { $addFields: { isFavorite: {
+        $in: [offerId ? new Types.ObjectId(offerId) : '$_id' , '$currentUser.favorites']
+      } }},
+      { $unset: 'currentUser' }
+    ];
+  }
+
+  return [
+    { $addFields: { isFavorite: false } },
+  ];
+};

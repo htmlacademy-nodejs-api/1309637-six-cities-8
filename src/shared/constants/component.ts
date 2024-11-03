@@ -13,4 +13,6 @@ export const COMPONENT = {
   EXCEPTION_FILTER: Symbol(),
   USER_CONTROLLER: Symbol(),
   COMMENT_CONTROLLER: Symbol(),
+  AUTH_SERVICE: Symbol(),
+  AUTH_EXCEPTION_FILTER: Symbol(),
 };

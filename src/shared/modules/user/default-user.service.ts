@@ -28,13 +28,7 @@ export class DefaultUserService implements IUserService {
   }
 
   public async findByEmail(email: string): Promise<DocumentType<UserEntity> | null> {
-    const result = await this.userModel
-      .aggregate([
-        { $match: { email } },
-      ])
-      .exec();
-
-    return result[0] || null;
+    return this.userModel.findOne({ email });
   }
 
   public async findOrCreate(dto: CreateUserDTO, salt: string): Promise<DocumentType<UserEntity>> {

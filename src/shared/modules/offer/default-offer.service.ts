@@ -15,8 +15,6 @@ import { ILogger } from '../../libs/logger/types/index.js';
 import { ECity, ESortType } from '../../types/index.js';
 import { OfferEntity } from './offer.entity.js';
 
-const MOCK_USER = '66f947e7e706754fb39b93a7';
-
 @injectable()
 export class DefaultOfferService implements IOfferService {
   constructor(
@@ -36,26 +34,26 @@ export class DefaultOfferService implements IOfferService {
     return result;
   }
 
-  public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+  public async findById(offerId: string, userId: string): Promise<DocumentType<OfferEntity> | null> {
     const result = await this.offerModel
       .aggregate([
         { $match: { '_id': new Types.ObjectId(offerId) } },
         ...populateComments,
         ...populateAuthor,
-        ...getIsFavorite(MOCK_USER, offerId),
+        ...getIsFavorite(userId, offerId),
       ])
       .exec();
 
     return result[0] || null;
   }
 
-  public async find(count?: number): Promise<DocumentType<OfferEntity>[]> {
+  public async find(count: number, userId: string): Promise<DocumentType<OfferEntity>[]> {
     const limit = count || DEFAULT_OFFER_COUNT;
 
     const result = await this.offerModel
       .aggregate([
         ...populateComments,
-        ...getIsFavorite(MOCK_USER),
+        ...getIsFavorite(userId),
         { $sort: { createdAt: ESortType.Desc } },
         { $limit: limit },
       ])
@@ -64,7 +62,7 @@ export class DefaultOfferService implements IOfferService {
     return result;
   }
 
-  public async findPremium(city: ECity): Promise<DocumentType<OfferEntity>[]> {
+  public async findPremium(city: ECity, userId: string): Promise<DocumentType<OfferEntity>[]> {
     return this.offerModel
       .aggregate([
         { $match: {
@@ -72,20 +70,26 @@ export class DefaultOfferService implements IOfferService {
           isPremium: true,
         } },
         ...populateComments,
-        ...getIsFavorite(MOCK_USER),
+        ...getIsFavorite(userId),
         { $sort: { createdAt: ESortType.Desc } },
         { $limit: MAX_PREMIUM_NUMBER },
       ]);
   }
 
-  public async updateById(offerId: string, dto: UpdateOfferDTO): Promise<DocumentType<OfferEntity> | null> {
+  public async updateById(offerId: string, _userId: string, dto: UpdateOfferDTO): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndUpdate(offerId, dto, { new: true });
   }
 
-  public async deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+  public async deleteById(offerId: string, _userId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndDelete(offerId)
       .exec();
+  }
+
+  public async isOwnOffer(offerId: string, userId: string): Promise<boolean> {
+    const offer = await this.offerModel.findOne({ _id: offerId });
+
+    return offer?.authorId?.toString() === userId;
   }
 }
