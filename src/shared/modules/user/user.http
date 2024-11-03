@@ -5,11 +5,11 @@ POST http://localhost:4000/users/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "new@overlook.net",
+  "email": "nedw@overlook.net",
   "avatarPath": "torrance.png",
   "name": "Auth",
   "type": "обычный",
-  "password": "password"
+  "password": "0h"
 }
 
 ###
@@ -20,7 +20,7 @@ Content-Type: application/json
 
 {
   "email": "new@overlook.net",
-  "password": "password"
+  "password": "passwordd"
 }
 
 ###
@@ -39,7 +39,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiL
 ###
 
 ## Добавление предложения в избранное
-POST http://localhost:4000/users/favorites/66f947e7e706754fb39b93ae HTTP/1.1
+POST http://localhost:4000/users/favorites/66f947e7e706754fb39b93bb HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiLCJuYW1lIjoiQXV0aCIsImlkIjoiNjcyNTMxMDdjNjE2NzZlYTczNGE4YjAzIiwiaWF0IjoxNzMwNDk1NjEyLCJleHAiOjE3MzA2Njg0MTJ9.KbhaENJBtEWavsUY4oLOjrYF0N4XhmJkOxXPJTWSjdU
 
@@ -53,6 +53,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiL
 ## Удаление предложения из избранного
 DELETE http://localhost:4000/users/favorites/66f947e7e706754fb39b93bb HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiLCJuYW1lIjoiQXV0aCIsImlkIjoiNjcyNTMxMDdjNjE2NzZlYTczNGE4YjAzIiwiaWF0IjoxNzMwNDk1NjEyLCJleHAiOjE3MzA2Njg0MTJ9.KbhaENJBtEWavsUY4oLOjrYF0N4XhmJkOxXPJTWSjdU
 
 ###
 
@@ -60,6 +61,7 @@ Content-Type: application/json
 
 POST http://localhost:4000/users/avatar HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiLCJuYW1lIjoiQXV0aCIsImlkIjoiNjcyNTMxMDdjNjE2NzZlYTczNGE4YjAzIiwiaWF0IjoxNzMwNDk1NjEyLCJleHAiOjE3MzA2Njg0MTJ9.KbhaENJBtEWavsUY4oLOjrYF0N4XhmJkOxXPJTWSjdU
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="avatarPath"; filename="screen.png"

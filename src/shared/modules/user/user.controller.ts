@@ -143,7 +143,7 @@ export class UserController extends BaseController {
 
   public async deleteFavorite({ params, tokenPayload }: Request<TParamOfferId>, res: Response): Promise<void> {
     const result = await this.userService.deleteFavorite(tokenPayload.id, params.offerId);
-    this.ok(res, fillDTO(UserRDO, result));
+    this.noContent(res, fillDTO(UserRDO, result));
   }
 
   public async uploadAvatar(req: Request, res: Response): Promise<void> {

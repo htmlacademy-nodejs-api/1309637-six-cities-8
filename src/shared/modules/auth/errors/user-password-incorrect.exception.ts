@@ -4,6 +4,6 @@ import { BaseUserException } from './index.js';
 
 export class UserPasswordIncorrectException extends BaseUserException {
   constructor() {
-    super(StatusCodes.UNAUTHORIZED, 'Incorrect user name or password');
+    super(StatusCodes.UNAUTHORIZED, 'Incorrect password');
   }
 }
