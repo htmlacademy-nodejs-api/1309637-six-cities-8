@@ -284,19 +284,17 @@ paths:
           description: Предложение с таким id не найдено.
 
   /offers/premium:
-    post:
+    get:
       tags:
         - offers
       summary: Получение списка премиальных предложений для города
       description: Возвращает список премиальных предложений для города
 
-      requestBody:
-        description: Информация для премиального списка.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/premiumOffers'
-        required: true
+      parameters:
+        - name: city
+          in: query
+          schema:
+            type: string
 
       responses:
         "200":

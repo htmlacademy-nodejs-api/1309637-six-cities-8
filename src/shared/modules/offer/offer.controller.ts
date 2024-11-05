@@ -13,13 +13,14 @@ import {
 import { EHttpMethod } from '../../../rest/types/index.js';
 import { COMPONENT, RADIX } from '../../constants/index.js';
 import { ILogger } from '../../libs/logger/types/index.js';
-import { IOfferService, TQueryCount } from './types/index.js';
+import { IOfferService, TQueryCity, TQueryCount } from './types/index.js';
 import {
   CreateOfferDTO,
   ShortOfferRDO,
   UpdateOfferDTO,
   FullOfferRDO,
   PremiumOfferDTO,
+  OfferCountDTO,
 } from './index.js';
 import { fillDTO } from '../../helpers/index.js';
 
@@ -33,7 +34,14 @@ export class OfferController extends BaseController {
 
     this.logger.info('Register routes for OfferController...');
 
-    this.addRoute({ path: '/', method: EHttpMethod.Get, handler: this.index });
+    this.addRoute({
+      path: '/',
+      method: EHttpMethod.Get,
+      handler: this.index,
+      middlewares: [
+        new ValidateDTOMiddleware(OfferCountDTO),
+      ],
+    });
     this.addRoute({
       path: '/',
       method: EHttpMethod.Post,
@@ -41,13 +49,15 @@ export class OfferController extends BaseController {
       middlewares: [
         new PrivateRouteMiddleware(),
         new ValidateDTOMiddleware(CreateOfferDTO),
-      ]
+      ],
     });
     this.addRoute({
       path: '/premium',
-      method: EHttpMethod.Post,
+      method: EHttpMethod.Get,
       handler: this.premium,
-      middlewares: [new ValidateDTOMiddleware(PremiumOfferDTO)]
+      middlewares: [
+        new ValidateDTOMiddleware(PremiumOfferDTO),
+      ],
     });
     this.addRoute({
       path: '/:offerId',
@@ -86,7 +96,7 @@ export class OfferController extends BaseController {
       throw new HttpError(
         StatusCodes.BAD_REQUEST,
         'Count query must be an integer',
-        'UserController',
+        'OfferController',
       );
     }
     const offers = await this.offerService.find(
@@ -102,7 +112,9 @@ export class OfferController extends BaseController {
     res: Response,
   ): Promise<void> {
     const result = await this.offerService.create({ ...body, authorId: tokenPayload.id });
-    this.created(res, fillDTO(FullOfferRDO, result));
+
+    const createdOffer = await this.offerService.findById(result.id, tokenPayload.id);
+    this.created(res, fillDTO(FullOfferRDO, createdOffer));
   }
 
   public async show({ tokenPayload, params }: Request, res: Response): Promise<void> {
@@ -136,19 +148,20 @@ export class OfferController extends BaseController {
       );
     }
 
-    const result = await this.offerService.updateById(
+    await this.offerService.updateById(
       params.offerId,
       tokenPayload.id,
       body as UpdateOfferDTO,
     );
-    this.ok(res, fillDTO(FullOfferRDO, result));
+    const updatedOffer = await this.offerService.findById(params.offerId, tokenPayload.id);
+    this.ok(res, fillDTO(FullOfferRDO, updatedOffer));
   }
 
   public async premium(
-    { body, tokenPayload }: Request<Record<string, unknown>, Record<string, unknown>, PremiumOfferDTO>,
+    { query, tokenPayload }: Request<unknown, unknown, unknown, TQueryCity>,
     res: Response,
   ): Promise<void> {
-    const result = await this.offerService.findPremium(body.city, tokenPayload?.id);
+    const result = await this.offerService.findPremium(query.city as string, tokenPayload?.id);
     this.ok(res, fillDTO(FullOfferRDO, result));
   }
 }

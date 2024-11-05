@@ -10,7 +10,7 @@ import { DefaultOfferService } from '../../shared/modules/offer/index.js';
 import { DefaultUserService } from '../../shared/modules/user/index.js';
 import { MongoDatabaseClient } from '../../shared/libs/database-client/index.js';
 import { getMongoURI } from '../../shared/helpers/database.js';
-import { UserModel } from '../../shared/modules/index.js';
+import { CommentModel, UserModel } from '../../shared/modules/index.js';
 import { OfferModel } from '../../shared/modules/index.js';
 
 const DEFAULT_DB_PORT = '27017';
@@ -28,7 +28,7 @@ export class ImportCommand implements ICommand {
     this.onCompleteImport = this.onCompleteImport.bind(this);
 
     this.logger = new ConsoleLogger();
-    this.offerService = new DefaultOfferService(this.logger, OfferModel);
+    this.offerService = new DefaultOfferService(this.logger, OfferModel, CommentModel);
     this.userService = new DefaultUserService(this.logger, UserModel, OfferModel);
     this.databaseClient = new MongoDatabaseClient(this.logger);
   }
