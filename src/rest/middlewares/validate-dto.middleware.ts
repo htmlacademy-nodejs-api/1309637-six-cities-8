@@ -8,8 +8,8 @@ import { IMiddleware } from '../types/index.js';
 export class ValidateDTOMiddleware implements IMiddleware {
   constructor(private dto: ClassConstructor<object>) {}
 
-  public async execute({ body }: Request, res: Response, next: NextFunction): Promise<void> {
-    const dtoInstance = plainToInstance(this.dto, body);
+  public async execute({ body, query }: Request, res: Response, next: NextFunction): Promise<void> {
+    const dtoInstance = plainToInstance(this.dto, { ...body, ...query });
     const errors = await validate(dtoInstance);
 
     if (errors.length) {

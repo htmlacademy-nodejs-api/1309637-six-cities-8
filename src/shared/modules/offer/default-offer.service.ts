@@ -14,12 +14,14 @@ import { COMPONENT, DEFAULT_OFFER_COUNT, MAX_PREMIUM_NUMBER } from '../../consta
 import { ILogger } from '../../libs/logger/types/index.js';
 import { ECity, ESortType } from '../../types/index.js';
 import { OfferEntity } from './offer.entity.js';
+import { CommentEntity } from '../comment/comment.entity.js';
 
 @injectable()
 export class DefaultOfferService implements IOfferService {
   constructor(
     @inject(COMPONENT.LOGGER) private readonly logger: ILogger,
     @inject(COMPONENT.OFFER_MODEL) private readonly offerModel: types.ModelType<OfferEntity>,
+    @inject(COMPONENT.COMMENT_MODEL) private readonly commentModel: types.ModelType<CommentEntity>,
   ) {}
 
   public async exists(documentId: string): Promise<boolean> {
@@ -82,9 +84,15 @@ export class DefaultOfferService implements IOfferService {
   }
 
   public async deleteById(offerId: string, _userId: string): Promise<DocumentType<OfferEntity> | null> {
-    return this.offerModel
+    const result = await this.offerModel
       .findByIdAndDelete(offerId)
       .exec();
+
+    await this.commentModel
+      .deleteMany({ offerId: new Types.ObjectId(offerId) })
+      .exec();
+
+    return result;
   }
 
   public async isOwnOffer(offerId: string, userId: string): Promise<boolean> {

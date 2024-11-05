@@ -1,12 +1,8 @@
-import dayjs from 'dayjs';
-
 import { IOfferGenerator } from './types/index.js';
 import { EFacilities, EHousing, EUserType, TMockServerData } from '../../types/index.js';
 import {
   PRICE,
-  OFFER_RATING,
   ROOMS_NUMBER,
-  WEEK_DAY,
   VISITORS_NUMBER,
 } from '../../constants/index.js';
 import {
@@ -25,7 +21,6 @@ export class TSVOfferGenerator implements IOfferGenerator {
     const previewImagePath = getRandomItem<string>(this.mockData.images);
     const photos = getRandomItems<string>(this.mockData.images).join(';');
     const isPremium = Boolean(getRandomNumber(0, 1));
-    const rating = getRandomNumber(OFFER_RATING.MIN, OFFER_RATING.MAX, OFFER_RATING.MAX_NUM_AFTER_DIGIT);
     const housingType = getRandomItem<EHousing>(this.mockData.housingTypes);
     const roomsNumber = getRandomNumber(ROOMS_NUMBER.MIN, ROOMS_NUMBER.MAX);
     const visitorsNumber = getRandomNumber(VISITORS_NUMBER.MIN, VISITORS_NUMBER.MAX);
@@ -37,19 +32,13 @@ export class TSVOfferGenerator implements IOfferGenerator {
     const avatarPath = getRandomItem<string>(this.mockData.avatars);
     const userType = getRandomItem<EUserType>(this.mockData.userTypes);
 
-    const createdDate = dayjs()
-      .subtract(getRandomNumber(WEEK_DAY.FIRST, WEEK_DAY.LAST), 'day')
-      .toISOString();
-
     return [
       title,
       description,
-      createdDate,
       city,
       previewImagePath,
       photos,
       isPremium,
-      rating,
       housingType,
       roomsNumber,
       visitorsNumber,

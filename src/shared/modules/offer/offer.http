@@ -1,8 +1,8 @@
 # Предложения
 ## Получить список предложений
-GET http://localhost:4000/offers HTTP/1.1
+GET http://localhost:4000/offers?count=2 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiLCJuYW1lIjoiQXV0aCIsImlkIjoiNjcyNTMxMDdjNjE2NzZlYTczNGE4YjAzIiwiaWF0IjoxNzMwNDk1NjEyLCJleHAiOjE3MzA2Njg0MTJ9.KbhaENJBtEWavsUY4oLOjrYF0N4XhmJkOxXPJTWSjdU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiLCJuYW1lIjoiQXV0aCIsImlkIjoiNjcyNTMxMDdjNjE2NzZlYTczNGE4YjAzIiwiaWF0IjoxNzMwODIxMTA4LCJleHAiOjE3MzA5OTM5MDh9.GD_Xv8fCKtyJxFjeLWGGVzte6L62BUVnoQ-ZXY9zlyg
 
 ###
 
@@ -14,19 +14,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiL
 ###
 
 ## Удалить предложение по id
-DELETE http://localhost:4000/offers/672555f786660d7734313d1d HTTP/1.1
+DELETE http://localhost:4000/offers/672a5aa17f0a3b8aaffb291a HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiLCJuYW1lIjoiQXV0aCIsImlkIjoiNjcyNTMxMDdjNjE2NzZlYTczNGE4YjAzIiwiaWF0IjoxNzMwNDk1NjEyLCJleHAiOjE3MzA2Njg0MTJ9.KbhaENJBtEWavsUY4oLOjrYF0N4XhmJkOxXPJTWSjdU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiLCJuYW1lIjoiQXV0aCIsImlkIjoiNjcyNTMxMDdjNjE2NzZlYTczNGE4YjAzIiwiaWF0IjoxNzMwODIxMTA4LCJleHAiOjE3MzA5OTM5MDh9.GD_Xv8fCKtyJxFjeLWGGVzte6L62BUVnoQ-ZXY9zlyg
 
 ###
 
 ## Обновить предложение по id
 PATCH http://localhost:4000/offers/6727dae4f578438f2e94fe24 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiLCJuYW1lIjoiQXV0aCIsImlkIjoiNjcyNTMxMDdjNjE2NzZlYTczNGE4YjAzIiwiaWF0IjoxNzMwNDk1NjEyLCJleHAiOjE3MzA2Njg0MTJ9.KbhaENJBtEWavsUY4oLOjrYF0N4XhmJkOxXPJTWSjdU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiLCJuYW1lIjoiQXV0aCIsImlkIjoiNjcyNTMxMDdjNjE2NzZlYTczNGE4YjAzIiwiaWF0IjoxNzMwODIxMTA4LCJleHAiOjE3MzA5OTM5MDh9.GD_Xv8fCKtyJxFjeLWGGVzte6L62BUVnoQ-ZXY9zlyg
 
 {
-  "title": "dasdasdasj asasuoain asdoasind"
+  "title": "rvijbid aine ib ibe wibeif "
 }
 
 ###
@@ -34,7 +34,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiL
 ## Создать предложение
 POST http://localhost:4000/offers HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiLCJuYW1lIjoiQXV0aCIsImlkIjoiNjcyNTMxMDdjNjE2NzZlYTczNGE4YjAzIiwiaWF0IjoxNzMwNDk1NjEyLCJleHAiOjE3MzA2Njg0MTJ9.KbhaENJBtEWavsUY4oLOjrYF0N4XhmJkOxXPJTWSjdU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiLCJuYW1lIjoiQXV0aCIsImlkIjoiNjcyNTMxMDdjNjE2NzZlYTczNGE4YjAzIiwiaWF0IjoxNzMwODIxMTA4LCJleHAiOjE3MzA5OTM5MDh9.GD_Xv8fCKtyJxFjeLWGGVzte6L62BUVnoQ-ZXY9zlyg
 
 {
   "title": "For test eeeeee",
@@ -57,7 +57,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiL
 ###
 
 ## Список премиальных предложений
-POST http://localhost:4000/offers/premium HTTP/1.1
+GET http://localhost:4000/offers/premium?city=Pari HTTP/1.1
 Content-Type: application/json
 
 {

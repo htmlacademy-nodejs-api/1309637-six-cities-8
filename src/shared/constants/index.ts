@@ -6,7 +6,7 @@ export {
   ROOMS_NUMBER,
   PRICE,
   DEFAULT_OFFER_COUNT,
-  INC_COMMENT_COUNT_NUMBER,
+  MIN_OFFER_COUNT,
   PHOTOS_LENGTH,
   MAX_PREMIUM_NUMBER,
 } from './offer.js';
@@ -28,7 +28,6 @@ export { COMPONENT } from './component.js';
 
 export {
   RADIX,
-  WEEK_DAY,
   CHUNK_SIZE,
   LOG_FILE_PATH,
   FILE_TRANSPORT_TARGET,

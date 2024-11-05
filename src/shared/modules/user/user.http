@@ -20,7 +20,7 @@ Content-Type: application/json
 
 {
   "email": "new@overlook.net",
-  "password": "passwordd"
+  "password": "password"
 }
 
 ###
