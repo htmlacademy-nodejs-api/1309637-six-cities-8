@@ -27,33 +27,32 @@ Content-Type: application/json
 
 ## Проверить токен пользователя
 GET http://localhost:4000/users/login HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiLCJuYW1lIjoiQXV0aCIsImlkIjoiNjcyNTMxMDdjNjE2NzZlYTczNGE4YjAzIiwiaWF0IjoxNzMwNDk1NjEyLCJleHAiOjE3MzA2Njg0MTJ9.KbhaENJBtEWavsUY4oLOjrYF0N4XhmJkOxXPJTWSjdU
+Authorization: *
 
 ###
 
 ## Получение списка избранных предложений
 GET http://localhost:4000/users/favorites HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiLCJuYW1lIjoiQXV0aCIsImlkIjoiNjcyNTMxMDdjNjE2NzZlYTczNGE4YjAzIiwiaWF0IjoxNzMwNDk1NjEyLCJleHAiOjE3MzA2Njg0MTJ9.KbhaENJBtEWavsUY4oLOjrYF0N4XhmJkOxXPJTWSjdU
-
+Authorization: *
 ###
 
 ## Добавление предложения в избранное
 POST http://localhost:4000/users/favorites/66f947e7e706754fb39b93bb HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiLCJuYW1lIjoiQXV0aCIsImlkIjoiNjcyNTMxMDdjNjE2NzZlYTczNGE4YjAzIiwiaWF0IjoxNzMwNDk1NjEyLCJleHAiOjE3MzA2Njg0MTJ9.KbhaENJBtEWavsUY4oLOjrYF0N4XhmJkOxXPJTWSjdU
+Authorization: *
 
 ###
 POST http://localhost:4000/users/favorites/66f947e7e706754fb39b93bb HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiLCJuYW1lIjoiQXV0aCIsImlkIjoiNjcyNTMxMDdjNjE2NzZlYTczNGE4YjAzIiwiaWF0IjoxNzMwNDk1NjEyLCJleHAiOjE3MzA2Njg0MTJ9.KbhaENJBtEWavsUY4oLOjrYF0N4XhmJkOxXPJTWSjdU
+Authorization: *
 
 ###
 
 ## Удаление предложения из избранного
 DELETE http://localhost:4000/users/favorites/66f947e7e706754fb39b93bb HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiLCJuYW1lIjoiQXV0aCIsImlkIjoiNjcyNTMxMDdjNjE2NzZlYTczNGE4YjAzIiwiaWF0IjoxNzMwNDk1NjEyLCJleHAiOjE3MzA2Njg0MTJ9.KbhaENJBtEWavsUY4oLOjrYF0N4XhmJkOxXPJTWSjdU
+Authorization: *
 
 ###
 
@@ -61,7 +60,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiL
 
 POST http://localhost:4000/users/avatar HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5ld0BvdmVybG9vay5uZXQiLCJuYW1lIjoiQXV0aCIsImlkIjoiNjcyNTMxMDdjNjE2NzZlYTczNGE4YjAzIiwiaWF0IjoxNzMwNDk1NjEyLCJleHAiOjE3MzA2Njg0MTJ9.KbhaENJBtEWavsUY4oLOjrYF0N4XhmJkOxXPJTWSjdU
+Authorization: *
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="avatarPath"; filename="screen.png"
